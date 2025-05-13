@@ -47,3 +47,5 @@ next-env.d.ts
 .vscode
 .cursor
 .jetbrains-config
+
+todo.md
