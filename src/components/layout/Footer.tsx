@@ -1,15 +1,13 @@
-import React from "react";
 import { Film, Github, Twitter, Instagram } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const Footer: React.FC = () => {
 	return (
 		<footer className="bg-gray-900 pt-10 pb-6">
 			<div className="container mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-					{/* Brand section */}
 					<div className="col-span-1">
-						<Link to="/" className="flex items-center space-x-2">
+						<Link href="/" className="flex items-center space-x-2">
 							<Film className="h-8 w-8 text-accent-500" />
 							<span className="text-xl font-bold text-white">CineExplorer</span>
 						</Link>
@@ -19,13 +17,12 @@ const Footer: React.FC = () => {
 						</p>
 					</div>
 
-					{/* Links section */}
 					<div className="col-span-1">
 						<h3 className="text-white font-medium mb-4">Navigation</h3>
 						<ul className="space-y-2">
 							<li>
 								<Link
-									to="/"
+									href="/"
 									className="text-gray-400 hover:text-white transition-colors text-sm"
 								>
 									Home
@@ -33,7 +30,7 @@ const Footer: React.FC = () => {
 							</li>
 							<li>
 								<Link
-									to="/categories"
+									href="/categories"
 									className="text-gray-400 hover:text-white transition-colors text-sm"
 								>
 									Categories
@@ -41,7 +38,7 @@ const Footer: React.FC = () => {
 							</li>
 							<li>
 								<Link
-									to="/favorites"
+									href="/favorites"
 									className="text-gray-400 hover:text-white transition-colors text-sm"
 								>
 									Favorites
@@ -50,13 +47,12 @@ const Footer: React.FC = () => {
 						</ul>
 					</div>
 
-					{/* Categories section */}
 					<div className="col-span-1">
 						<h3 className="text-white font-medium mb-4">Categories</h3>
 						<ul className="space-y-2">
 							<li>
 								<Link
-									to="/categories"
+									href="/categories"
 									className="text-gray-400 hover:text-white transition-colors text-sm"
 								>
 									Action
@@ -64,7 +60,7 @@ const Footer: React.FC = () => {
 							</li>
 							<li>
 								<Link
-									to="/categories"
+									href="/categories"
 									className="text-gray-400 hover:text-white transition-colors text-sm"
 								>
 									Drama
@@ -72,7 +68,7 @@ const Footer: React.FC = () => {
 							</li>
 							<li>
 								<Link
-									to="/categories"
+									href="/categories"
 									className="text-gray-400 hover:text-white transition-colors text-sm"
 								>
 									Science Fiction
@@ -80,7 +76,7 @@ const Footer: React.FC = () => {
 							</li>
 							<li>
 								<Link
-									to="/categories"
+									href="/categories"
 									className="text-gray-400 hover:text-white transition-colors text-sm"
 								>
 									Comedy
@@ -89,7 +85,6 @@ const Footer: React.FC = () => {
 						</ul>
 					</div>
 
-					{/* Connect section */}
 					<div className="col-span-1">
 						<h3 className="text-white font-medium mb-4">Connect</h3>
 						<div className="flex space-x-4">
