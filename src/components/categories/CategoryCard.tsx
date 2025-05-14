@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
-import { MovieCategory } from "../../types";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { MovieCategory } from "../../interfaces/index";
 
 interface CategoryCardProps {
 	category: MovieCategory;
@@ -13,14 +13,14 @@ interface CategoryCardProps {
 }
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ category, index }) => {
-	const navigate = useNavigate();
+	const router = useRouter();
 	const [ref, inView] = useInView({
 		triggerOnce: true,
 		threshold: 0.1,
 	});
 
 	const handleClick = () => {
-		navigate(`/categories?id=${category.id}`);
+		router.push(`/categories?id=${category.id}`);
 	};
 
 	return (
