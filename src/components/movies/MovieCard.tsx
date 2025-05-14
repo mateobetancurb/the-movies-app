@@ -1,7 +1,9 @@
+"use client";
+
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { Heart, Star } from "lucide-react";
-import { Movie } from "../../types";
+import { Movie } from "../../interfaces";
 import { useFavorites } from "../../context/FavoritesContext";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -12,7 +14,7 @@ interface MovieCardProps {
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
-	const navigate = useNavigate();
+	const router = useRouter();
 	const { isFavorite, addFavorite, removeFavorite } = useFavorites();
 	const favorite = isFavorite(movie.id);
 	const [ref, inView] = useInView({
@@ -21,7 +23,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 	});
 
 	const handleNavigate = () => {
-		navigate(`/movie/${movie.id}`);
+		router.push(`/movie/${movie.id}`);
 	};
 
 	const handleFavoriteToggle = (e: React.MouseEvent) => {
