@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
 	genres,
@@ -14,7 +14,7 @@ import GenresList from "../../src/components/categories/GenresList";
 import SearchBar from "../../src/components/ui/SearchBar";
 import { motion } from "framer-motion";
 
-const Categories: React.FC = () => {
+function CategoryContent() {
 	const searchParams = useSearchParams();
 	const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
 		null
@@ -36,7 +36,7 @@ const Categories: React.FC = () => {
 			setSelectedCategoryId(null);
 			setSelectedGenreId(null);
 		}
-	}, [location.search]);
+	}, [searchParams]);
 
 	const handleSearch = (query: string) => {
 		setSearchQuery(query);
@@ -142,6 +142,18 @@ const Categories: React.FC = () => {
 				/>
 			)}
 		</motion.div>
+	);
+}
+
+const Categories: React.FC = () => {
+	return (
+		<Suspense
+			fallback={
+				<div className="container-page pt-24">Loading categories...</div>
+			}
+		>
+			<CategoryContent />
+		</Suspense>
 	);
 };
 
