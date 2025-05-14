@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { useFavorites } from "../../src/context/FavoritesContext";
 import { getMovieById } from "../../src/data/movies";
 import MovieGrid from "../../src/components/movies/MovieGrid";
@@ -10,7 +9,6 @@ import Link from "next/link";
 const Favorites: React.FC = () => {
 	const { favorites } = useFavorites();
 
-	// Get the details of favorited movies
 	const favoriteMovies = favorites
 		.map((id) => getMovieById(id))
 		.filter((movie) => movie !== undefined);
