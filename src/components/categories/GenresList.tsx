@@ -2,8 +2,8 @@
 
 import React from "react";
 import { ArrowRight } from "lucide-react";
-import { Genre } from "../../types";
-import { useNavigate } from "react-router-dom";
+import { Genre } from "../../interfaces/index";
+import { useRouter } from "next/navigation";
 
 interface GenresListProps {
 	genres: Genre[];
@@ -11,10 +11,10 @@ interface GenresListProps {
 }
 
 const GenresList: React.FC<GenresListProps> = ({ genres, title }) => {
-	const navigate = useNavigate();
+	const router = useRouter();
 
 	const handleGenreClick = (genreId: number) => {
-		navigate(`/categories?genre=${genreId}`);
+		router.push(`/categories?genre=${genreId}`);
 	};
 
 	return (
