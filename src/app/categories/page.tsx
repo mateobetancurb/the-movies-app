@@ -7,11 +7,11 @@ import {
 	movieCategories,
 	getMoviesByCategory,
 	getMoviesByGenre,
-} from "../../src/data/movies";
-import MovieGrid from "../../src/components/movies/MovieGrid";
-import CategoryCard from "../../src/components/categories/CategoryCard";
-import GenresList from "../../src/components/categories/GenresList";
-import SearchBar from "../../src/components/ui/SearchBar";
+} from "../../data/movies";
+import MovieGrid from "../../components/movies/MovieGrid";
+import CategoryCard from "../../components/categories/CategoryCard";
+import GenresList from "../../components/categories/GenresList";
+import SearchBar from "../../components/ui/SearchBar";
 import { motion } from "framer-motion";
 
 function CategoryContent() {

@@ -1,8 +1,8 @@
 "use client";
 
-import { useFavorites } from "../../src/context/FavoritesContext";
-import { getMovieById } from "../../src/data/movies";
-import MovieGrid from "../../src/components/movies/MovieGrid";
+import { useFavorites } from "../../context/FavoritesContext";
+import { getMovieById } from "../../data/movies";
+import MovieGrid from "../../components/movies/MovieGrid";
 import { Heart } from "lucide-react";
 import Link from "next/link";
 
