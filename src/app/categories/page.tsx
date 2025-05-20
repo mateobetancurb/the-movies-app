@@ -1,19 +1,20 @@
 "use client";
 
+import { motion } from "framer-motion";
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
-	genres,
 	movieCategories,
 	getMoviesByCategory,
 	getMoviesByGenre,
 } from "../../data/movies";
+import { getGenres } from "../../services/movieService";
 import MovieGrid from "../../components/movies/MovieGrid";
 import CategoryCard from "../../components/categories/CategoryCard";
 import GenresList from "../../components/categories/GenresList";
 import SearchBar from "../../components/ui/SearchBar";
-import { motion } from "framer-motion";
 
+const genres = await getGenres();
 function CategoryContent() {
 	const searchParams = useSearchParams();
 	const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
