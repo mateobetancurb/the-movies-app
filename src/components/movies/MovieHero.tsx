@@ -25,7 +25,7 @@ const MovieHero: React.FC<MovieHeroProps> = ({ movie }) => {
 		<div className="relative">
 			<div className="absolute inset-0 h-[70vh]">
 				<img
-					src={movie.backdrop_path}
+					src={movie.backdrop_path || ""}
 					alt={`${movie.title} backdrop`}
 					className="w-full h-full object-cover"
 				/>

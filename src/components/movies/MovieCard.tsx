@@ -47,7 +47,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 			{/* Movie poster */}
 			<div className="relative aspect-[2/3] overflow-hidden">
 				<img
-					src={movie.poster_path}
+					src={movie.poster_path || ""}
 					alt={`${movie.title} poster`}
 					className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
 				/>
