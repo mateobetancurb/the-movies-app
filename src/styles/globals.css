@@ -1,1 +1,67 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	color-scheme: light dark;
+}
+
+body {
+	@apply bg-gray-950 text-gray-100 min-h-screen antialiased;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+@layer components {
+	.container-page {
+		@apply container mx-auto px-4 sm:px-6 lg:px-8 py-6;
+	}
+
+	.btn {
+		@apply px-4 py-2 rounded-md font-medium transition-colors;
+	}
+
+	.btn-primary {
+		@apply bg-primary-600 hover:bg-primary-700 text-white;
+	}
+
+	.btn-secondary {
+		@apply bg-secondary-600 hover:bg-secondary-700 text-white;
+	}
+
+	.btn-accent {
+		@apply bg-accent-500 hover:bg-accent-600 text-white;
+	}
+
+	.card {
+		@apply bg-gray-800 rounded-lg overflow-hidden shadow-lg;
+	}
+}
+
+/* Movie card hover effects */
+.movie-card {
+	@apply transition-all duration-300 ease-in-out;
+}
+
+.movie-card:hover {
+	@apply transform -translate-y-1 shadow-xl;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+	@apply w-2;
+}
+
+::-webkit-scrollbar-track {
+	@apply bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+	@apply bg-gray-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	@apply bg-gray-600;
+}
