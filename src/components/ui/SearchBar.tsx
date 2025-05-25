@@ -6,10 +6,12 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 interface SearchBarProps {
 	placeholder?: string;
+	onSearch?: (query: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
 	placeholder = "Search for movies...",
+	onSearch,
 }) => {
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
@@ -30,6 +32,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
 			params.delete("q");
 		}
 		replace(`${pathname}?${params.toString()}`);
+
+		if (onSearch) {
+			onSearch(query.trim());
+		}
 	};
 
 	const clearSearch = () => {
@@ -37,6 +43,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
 		const params = new URLSearchParams(searchParams);
 		params.delete("q");
 		replace(`${pathname}?${params.toString()}`);
+
+		if (onSearch) {
+			onSearch("");
+		}
 	};
 
 	return (
