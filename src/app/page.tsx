@@ -1,6 +1,3 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import {
 	getMoviesByCategory,
 	movies,
@@ -10,39 +7,33 @@ import MovieHero from "@/src/components/movies/MovieHero";
 import MovieGrid from "@/src/components/movies/MovieGrid";
 import SearchBar from "@/src/components/ui/SearchBar";
 
-const Home: React.FC = () => {
-	const [featuredMovie, setFeaturedMovie] = useState(movies[0]);
-	const [searchQuery, setSearchQuery] = useState("");
-	const [searchResults, setSearchResults] = useState<typeof movies>([]);
-
-	useEffect(() => {
-		const randomIndex = Math.floor(Math.random() * 3);
-		setFeaturedMovie(movies[randomIndex]);
-	}, []);
-
-	const handleSearch = (query: string) => {
-		setSearchQuery(query);
-
-		if (!query) {
-			setSearchResults([]);
-			return;
-		}
-
-		const results = movies.filter(
-			(movie) =>
-				movie.title.toLowerCase().includes(query.toLowerCase()) ||
-				movie.overview.toLowerCase().includes(query.toLowerCase())
-		);
-
-		setSearchResults(results);
+interface HomeProps {
+	searchParams?: {
+		q?: string;
 	};
+}
+
+const Home: React.FC<HomeProps> = async ({ searchParams }) => {
+	const randomIndex = Math.floor(Math.random() * 3);
+	const featuredMovie = movies[randomIndex];
+
+	const searchQuery = searchParams?.q || "";
+	let searchResults: typeof movies = [];
+
+	if (searchQuery) {
+		searchResults = movies.filter(
+			(movie) =>
+				movie.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				movie.overview.toLowerCase().includes(searchQuery.toLowerCase())
+		);
+	}
 
 	return (
 		<div className="pt-16">
 			<MovieHero movie={featuredMovie} />
 			<div className="container-page">
 				<div className="my-8">
-					<SearchBar onSearch={handleSearch} />
+					<SearchBar />
 				</div>
 
 				{searchQuery ? (
