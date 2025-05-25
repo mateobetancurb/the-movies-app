@@ -1,10 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { getMoviesByCategory, movies, movieCategories } from "../data/movies";
-import MovieHero from "../components/movies/MovieHero";
-import MovieGrid from "../components/movies/MovieGrid";
-import SearchBar from "../components/ui/SearchBar";
+import { useState, useEffect } from "react";
+import {
+	getMoviesByCategory,
+	movies,
+	movieCategories,
+} from "@/src/data/movies";
+import MovieHero from "@/src/components/movies/MovieHero";
+import MovieGrid from "@/src/components/movies/MovieGrid";
+import SearchBar from "@/src/components/ui/SearchBar";
 
 const Home: React.FC = () => {
 	const [featuredMovie, setFeaturedMovie] = useState(movies[0]);
