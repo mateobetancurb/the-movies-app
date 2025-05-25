@@ -7,18 +7,19 @@ import MovieHero from "@/src/components/movies/MovieHero";
 import MovieGrid from "@/src/components/movies/MovieGrid";
 import SearchBar from "@/src/components/ui/SearchBar";
 
-interface HomeProps {
-	searchParams?: {
+export default async function Home({
+	searchParams,
+}: {
+	searchParams?: Promise<{
 		q?: string;
-	};
-}
+	}>;
+}) {
+	const resolvedParams = (await searchParams) || {};
+	const searchQuery = resolvedParams.q || "";
+	let searchResults: typeof movies = [];
 
-const Home: React.FC<HomeProps> = async ({ searchParams }) => {
 	const randomIndex = Math.floor(Math.random() * 3);
 	const featuredMovie = movies[randomIndex];
-
-	const searchQuery = searchParams?.q || "";
-	let searchResults: typeof movies = [];
 
 	if (searchQuery) {
 		searchResults = movies.filter(
@@ -56,6 +57,4 @@ const Home: React.FC<HomeProps> = async ({ searchParams }) => {
 			</div>
 		</div>
 	);
-};
-
-export default Home;
+}
