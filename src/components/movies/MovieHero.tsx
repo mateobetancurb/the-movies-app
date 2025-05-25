@@ -1,26 +1,13 @@
-"use client";
-
-import { Play, Star, Clock, Heart } from "lucide-react";
+import { Play, Star, Clock } from "lucide-react";
 import React from "react";
-import { Movie } from "../../interfaces";
-import { useFavorites } from "../../context/FavoritesContext";
+import { Movie } from "@/src/interfaces";
+import AddToFavoritesBtn from "../core/AddToFavoritesBtn";
 
 interface MovieHeroProps {
 	movie: Movie;
 }
 
 const MovieHero: React.FC<MovieHeroProps> = ({ movie }) => {
-	const { isFavorite, addFavorite, removeFavorite } = useFavorites();
-	const favorite = isFavorite(movie.id);
-
-	const handleFavoriteToggle = () => {
-		if (favorite) {
-			removeFavorite(movie.id);
-		} else {
-			addFavorite(movie.id);
-		}
-	};
-
 	return (
 		<div className="relative">
 			<div className="absolute inset-0 h-[70vh]">
@@ -73,23 +60,7 @@ const MovieHero: React.FC<MovieHeroProps> = ({ movie }) => {
 							<Play className="w-5 h-5 mr-2" />
 							<span>Watch Trailer</span>
 						</button>
-
-						<button
-							className={`btn flex items-center ${
-								favorite
-									? "btn-secondary"
-									: "bg-gray-800 hover:bg-gray-700 text-white"
-							}`}
-							onClick={handleFavoriteToggle}
-						>
-							<Heart
-								className="w-5 h-5 mr-2"
-								fill={favorite ? "currentColor" : "none"}
-							/>
-							<span>
-								{favorite ? "Remove from Favorites" : "Add to Favorites"}
-							</span>
-						</button>
+						<AddToFavoritesBtn movie={movie} />
 					</div>
 				</div>
 			</div>
