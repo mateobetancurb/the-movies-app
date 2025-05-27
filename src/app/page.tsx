@@ -1,11 +1,10 @@
-import {
-	getMoviesByCategory,
-	movies,
-	movieCategories,
-} from "@/src/data/movies";
+import { movies } from "@/src/data/movies";
 import MovieHero from "@/src/components/movies/MovieHero";
 import MovieGrid from "@/src/components/movies/MovieGrid";
 import SearchBar from "@/src/components/ui/SearchBar";
+import TrendingNowSection from "@/src/components/movies/sections/TrendingNowSection";
+import TopRatedSection from "@/src/components/movies/sections/TopRatedSection";
+import NewReleasesSection from "@/src/components/movies/sections/NewReleasesSection";
 
 export default async function Home({
 	searchParams,
@@ -45,13 +44,9 @@ export default async function Home({
 					/>
 				) : (
 					<>
-						{movieCategories.slice(0, 3).map((category) => (
-							<MovieGrid
-								key={category.id}
-								movies={getMoviesByCategory(category.id)}
-								title={category.name}
-							/>
-						))}
+						<TrendingNowSection />
+						<TopRatedSection />
+						<NewReleasesSection />
 					</>
 				)}
 			</div>
