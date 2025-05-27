@@ -1,44 +1,40 @@
-"use client";
+import {
+	getMoviesByCategory,
+	movies,
+	movieCategories,
+} from "@/src/data/movies";
+import MovieHero from "@/src/components/movies/MovieHero";
+import MovieGrid from "@/src/components/movies/MovieGrid";
+import SearchBar from "@/src/components/ui/SearchBar";
 
-import React, { useState, useEffect } from "react";
-import { getMoviesByCategory, movies, movieCategories } from "../data/movies";
-import MovieHero from "../components/movies/MovieHero";
-import MovieGrid from "../components/movies/MovieGrid";
-import SearchBar from "../components/ui/SearchBar";
+export default async function Home({
+	searchParams,
+}: {
+	searchParams?: Promise<{
+		q?: string;
+	}>;
+}) {
+	const resolvedParams = (await searchParams) || {};
+	const searchQuery = resolvedParams.q || "";
+	let searchResults: typeof movies = [];
 
-const Home: React.FC = () => {
-	const [featuredMovie, setFeaturedMovie] = useState(movies[0]);
-	const [searchQuery, setSearchQuery] = useState("");
-	const [searchResults, setSearchResults] = useState<typeof movies>([]);
+	const randomIndex = Math.floor(Math.random() * 3);
+	const featuredMovie = movies[randomIndex];
 
-	useEffect(() => {
-		const randomIndex = Math.floor(Math.random() * 3);
-		setFeaturedMovie(movies[randomIndex]);
-	}, []);
-
-	const handleSearch = (query: string) => {
-		setSearchQuery(query);
-
-		if (!query) {
-			setSearchResults([]);
-			return;
-		}
-
-		const results = movies.filter(
+	if (searchQuery) {
+		searchResults = movies.filter(
 			(movie) =>
-				movie.title.toLowerCase().includes(query.toLowerCase()) ||
-				movie.overview.toLowerCase().includes(query.toLowerCase())
+				movie.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				movie.overview.toLowerCase().includes(searchQuery.toLowerCase())
 		);
-
-		setSearchResults(results);
-	};
+	}
 
 	return (
 		<div className="pt-16">
 			<MovieHero movie={featuredMovie} />
 			<div className="container-page">
 				<div className="my-8">
-					<SearchBar onSearch={handleSearch} />
+					<SearchBar />
 				</div>
 
 				{searchQuery ? (
@@ -61,6 +57,4 @@ const Home: React.FC = () => {
 			</div>
 		</div>
 	);
-};
-
-export default Home;
+}

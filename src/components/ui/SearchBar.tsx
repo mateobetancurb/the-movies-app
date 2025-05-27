@@ -2,28 +2,51 @@
 
 import { useState } from "react";
 import { Search, X } from "lucide-react";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 interface SearchBarProps {
-	onSearch: (query: string) => void;
 	placeholder?: string;
+	onSearch?: (query: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
-	onSearch,
 	placeholder = "Search for movies...",
+	onSearch,
 }) => {
-	const [query, setQuery] = useState("");
+	const searchParams = useSearchParams();
+	const pathname = usePathname();
+	const { replace } = useRouter();
+
+	const [query, setQuery] = useState(searchParams.get("q")?.toString() || "");
+
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setQuery(e.target.value);
+	};
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
+		const params = new URLSearchParams(searchParams);
 		if (query.trim()) {
+			params.set("q", query.trim());
+		} else {
+			params.delete("q");
+		}
+		replace(`${pathname}?${params.toString()}`);
+
+		if (onSearch) {
 			onSearch(query.trim());
 		}
 	};
 
 	const clearSearch = () => {
 		setQuery("");
-		onSearch("");
+		const params = new URLSearchParams(searchParams);
+		params.delete("q");
+		replace(`${pathname}?${params.toString()}`);
+
+		if (onSearch) {
+			onSearch("");
+		}
 	};
 
 	return (
@@ -35,7 +58,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 				<input
 					type="search"
 					value={query}
-					onChange={(e) => setQuery(e.target.value)}
+					onChange={handleInputChange}
 					className="w-full p-4 pl-10 text-sm bg-gray-800 border border-gray-700 rounded-lg focus:ring-accent-500 focus:border-accent-500 placeholder-gray-400 text-white"
 					placeholder={placeholder}
 				/>

@@ -73,13 +73,6 @@ const Navbar: React.FC = () => {
 
 					{/* search and mobile menu buttons */}
 					<div className="flex items-center space-x-4">
-						<button
-							className="p-1 rounded-full hover:bg-gray-800 transition-colors text-white"
-							aria-label="Search"
-						>
-							<Search className="h-5 w-5" />
-						</button>
-
 						{/* mobile menu button */}
 						<button
 							onClick={toggleMenu}
