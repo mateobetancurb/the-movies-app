@@ -1,10 +1,15 @@
-import { getMoviesByCategory } from "@/src/data/movies";
 import MovieSection from "./MovieSection";
+import { getTrendingMovies } from "@/src/services/movieService";
 
-const TrendingNowSection = () => {
-	const trendingMovies = getMoviesByCategory(1);
+const TrendingNowSection = async () => {
+	const trendingMoviesResponse = await getTrendingMovies();
 
-	return <MovieSection title="Trending Now" movies={trendingMovies} />;
+	return (
+		<MovieSection
+			title="Trending Now"
+			movies={trendingMoviesResponse.results}
+		/>
+	);
 };
 
 export default TrendingNowSection;
