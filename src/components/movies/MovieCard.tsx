@@ -35,6 +35,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 		}
 	};
 
+	// Make sure genres is always an array
+	const genres = movie.genres || [];
+
 	return (
 		<motion.div
 			ref={ref}
@@ -91,7 +94,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 
 				{/* Genres */}
 				<div className="mt-2 flex flex-wrap gap-1">
-					{movie.genres.slice(0, 2).map((genre) => (
+					{genres.slice(0, 2).map((genre) => (
 						<span
 							key={genre.id}
 							className="text-xs px-2 py-0.5 bg-gray-700 rounded-full text-gray-300"
