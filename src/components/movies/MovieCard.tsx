@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Heart, Star } from "lucide-react";
 import { Movie } from "../../interfaces";
@@ -49,10 +50,12 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 		>
 			{/* Movie poster */}
 			<div className="relative aspect-[2/3] overflow-hidden">
-				<img
+				<Image
 					src={movie.poster_path || ""}
 					alt={`${movie.title} poster`}
 					className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+					width={500}
+					height={750}
 				/>
 				<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity"></div>
 
