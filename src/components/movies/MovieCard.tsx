@@ -91,7 +91,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 					{movie.title}
 				</h3>
 				<p className="text-sm text-gray-400 mt-1">
-					{new Date(movie.release_date).getFullYear()}
+					{movie.release_date ? movie.release_date.split("-")[0] : "N/A"}
 					{movie.runtime && ` • ${movie.runtime} min`}
 				</p>
 
