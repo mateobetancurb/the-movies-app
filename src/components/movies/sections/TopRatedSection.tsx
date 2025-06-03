@@ -1,10 +1,10 @@
-import { getMoviesByCategory } from "@/src/data/movies";
 import MovieSection from "./MovieSection";
+import { getTopRatedMovies } from "@/src/services/movieService";
 
-const TopRatedSection = () => {
-	const topRatedMovies = getMoviesByCategory(2);
+const TopRatedSection = async () => {
+	const topRatedMovies = await getTopRatedMovies();
 
-	return <MovieSection title="Top Rated" movies={topRatedMovies} />;
+	return <MovieSection title="Top Rated" movies={topRatedMovies.results} />;
 };
 
 export default TopRatedSection;

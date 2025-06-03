@@ -7,6 +7,7 @@ import {
 	MovieDetails,
 	TMDBConfiguration,
 } from "../interfaces";
+import { convertGenreIdsToGenres } from "../helpers/genreHelpers";
 
 const API_KEY = process.env.TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -64,6 +65,8 @@ const processMovieListItem = (movie: any): Movie => ({
 	...movie,
 	poster_path: constructImageUrl(movie.poster_path),
 	backdrop_path: constructImageUrl(movie.backdrop_path, "w1280"),
+	genres: movie.genres || convertGenreIdsToGenres(movie.genre_ids) || [],
+	cast: movie.cast || [],
 });
 
 const processPaginatedMovies = (
