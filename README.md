@@ -2,6 +2,21 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Prerequisites
+
+You'll need to get a TMDB (The Movie Database) API key to use this application:
+
+1. Go to [https://www.themoviedb.org/settings/api](https://www.themoviedb.org/settings/api)
+2. Create an account if you don't have one
+3. Request an API key
+4. Create a `.env.local` file in the root directory and add your API key:
+
+```bash
+TMDB_API_KEY=your_tmdb_api_key_here
+```
+
+### Running the Development Server
+
 First, run the development server:
 
 ```bash
