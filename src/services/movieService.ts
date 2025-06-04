@@ -229,3 +229,22 @@ export const getTMDBConfiguration = async (): Promise<TMDBConfiguration> => {
 	);
 	return data;
 };
+
+export const getFeaturedMovie = async (): Promise<Movie | null> => {
+	try {
+		const trendingMovies = await getTrendingMovies(1);
+
+		if (trendingMovies.results.length === 0) {
+			return null;
+		}
+
+		const randomIndex = Math.floor(
+			Math.random() * Math.min(10, trendingMovies.results.length)
+		);
+		const selectedMovie = trendingMovies.results[randomIndex];
+		return await getMovieDetails(selectedMovie.id);
+	} catch (error) {
+		console.error("Error fetching featured movie:", error);
+		return null;
+	}
+};
