@@ -10,8 +10,8 @@ const customJestConfig = {
 	setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
 	testEnvironment: "jest-environment-jsdom",
 	moduleNameMapper: {
-		// Handle module aliases (if you're using paths in tsconfig)
-		"^@/(.*)$": "<rootDir>/src/$1",
+		// Handle module aliases to match tsconfig paths
+		"^@/(.*)$": "<rootDir>/$1",
 	},
 	collectCoverage: true,
 	collectCoverageFrom: [
