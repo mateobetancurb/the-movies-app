@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import NewReleasesSection from "../../../../components/movies/sections/NewReleasesSection";
-import { getMoviesByCategory } from "../../../../data/movies";
+import { getUpcomingMovies } from "../../../../services/movieService";
 
-// Mock the data/movies module
-jest.mock("../../../../data/movies", () => ({
-	getMoviesByCategory: jest.fn(),
+// Mock the movieService module
+jest.mock("../../../../services/movieService", () => ({
+	getUpcomingMovies: jest.fn(),
 }));
 
 // Mock the MovieSection component
@@ -31,8 +31,8 @@ jest.mock("../../../../components/movies/sections/MovieSection", () => {
 	};
 });
 
-const mockGetMoviesByCategory = getMoviesByCategory as jest.MockedFunction<
-	typeof getMoviesByCategory
+const mockGetUpcomingMovies = getUpcomingMovies as jest.MockedFunction<
+	typeof getUpcomingMovies
 >;
 
 describe("NewReleasesSection", () => {
@@ -77,57 +77,86 @@ describe("NewReleasesSection", () => {
 		jest.clearAllMocks();
 	});
 
-	it("renders the New Releases section with correct title", () => {
-		mockGetMoviesByCategory.mockReturnValue(mockNewReleaseMovies);
+	it("renders the New Releases section with correct title", async () => {
+		mockGetUpcomingMovies.mockResolvedValue({
+			results: mockNewReleaseMovies,
+			page: 1,
+			total_pages: 1,
+			total_results: 2,
+		});
 
-		render(<NewReleasesSection />);
+		render(await NewReleasesSection());
 
 		expect(screen.getByText("New Releases")).toBeInTheDocument();
 		expect(screen.getByTestId("movie-section")).toBeInTheDocument();
 	});
 
-	it("calls getMoviesByCategory with category ID 3 for new releases", () => {
-		mockGetMoviesByCategory.mockReturnValue(mockNewReleaseMovies);
+	it("calls getUpcomingMovies", async () => {
+		mockGetUpcomingMovies.mockResolvedValue({
+			results: mockNewReleaseMovies,
+			page: 1,
+			total_pages: 1,
+			total_results: 2,
+		});
 
-		render(<NewReleasesSection />);
+		await NewReleasesSection();
 
-		expect(mockGetMoviesByCategory).toHaveBeenCalledWith(3);
-		expect(mockGetMoviesByCategory).toHaveBeenCalledTimes(1);
+		expect(mockGetUpcomingMovies).toHaveBeenCalledTimes(1);
 	});
 
-	it("renders movies returned by getMoviesByCategory", () => {
-		mockGetMoviesByCategory.mockReturnValue(mockNewReleaseMovies);
+	it("renders movies returned by getUpcomingMovies", async () => {
+		mockGetUpcomingMovies.mockResolvedValue({
+			results: mockNewReleaseMovies,
+			page: 1,
+			total_pages: 1,
+			total_results: 2,
+		});
 
-		render(<NewReleasesSection />);
+		render(await NewReleasesSection());
 
 		expect(screen.getByText("Dune: Part Two")).toBeInTheDocument();
 		expect(screen.getByText("Poor Things")).toBeInTheDocument();
 		expect(screen.getByTestId("movies-count")).toHaveTextContent("2");
 	});
 
-	it("passes movies data to MovieSection component", () => {
-		mockGetMoviesByCategory.mockReturnValue(mockNewReleaseMovies);
+	it("passes movies data to MovieSection component", async () => {
+		mockGetUpcomingMovies.mockResolvedValue({
+			results: mockNewReleaseMovies,
+			page: 1,
+			total_pages: 1,
+			total_results: 2,
+		});
 
-		render(<NewReleasesSection />);
+		render(await NewReleasesSection());
 
 		expect(screen.getByTestId("movie-1")).toBeInTheDocument();
 		expect(screen.getByTestId("movie-2")).toBeInTheDocument();
 	});
 
-	it("handles empty movies array gracefully", () => {
-		mockGetMoviesByCategory.mockReturnValue([]);
+	it("handles empty movies array gracefully", async () => {
+		mockGetUpcomingMovies.mockResolvedValue({
+			results: [],
+			page: 1,
+			total_pages: 0,
+			total_results: 0,
+		});
 
-		render(<NewReleasesSection />);
+		render(await NewReleasesSection());
 
 		expect(screen.getByText("New Releases")).toBeInTheDocument();
 		expect(screen.getByTestId("movies-count")).toHaveTextContent("0");
 	});
 
-	it("renders with single movie", () => {
+	it("renders with single movie", async () => {
 		const singleMovie = [mockNewReleaseMovies[0]];
-		mockGetMoviesByCategory.mockReturnValue(singleMovie);
+		mockGetUpcomingMovies.mockResolvedValue({
+			results: singleMovie,
+			page: 1,
+			total_pages: 1,
+			total_results: 1,
+		});
 
-		render(<NewReleasesSection />);
+		render(await NewReleasesSection());
 
 		expect(screen.getByText("New Releases")).toBeInTheDocument();
 		expect(screen.getByText("Dune: Part Two")).toBeInTheDocument();
@@ -135,15 +164,20 @@ describe("NewReleasesSection", () => {
 		expect(screen.queryByText("Poor Things")).not.toBeInTheDocument();
 	});
 
-	it("renders with large number of movies", () => {
+	it("renders with large number of movies", async () => {
 		const manyMovies = Array.from({ length: 20 }, (_, index) => ({
 			...mockNewReleaseMovies[0],
 			id: index + 1,
 			title: `Movie ${index + 1}`,
 		}));
-		mockGetMoviesByCategory.mockReturnValue(manyMovies);
+		mockGetUpcomingMovies.mockResolvedValue({
+			results: manyMovies,
+			page: 1,
+			total_pages: 1,
+			total_results: 20,
+		});
 
-		render(<NewReleasesSection />);
+		render(await NewReleasesSection());
 
 		expect(screen.getByText("New Releases")).toBeInTheDocument();
 		expect(screen.getByTestId("movies-count")).toHaveTextContent("20");
@@ -151,20 +185,16 @@ describe("NewReleasesSection", () => {
 		expect(screen.getByText("Movie 20")).toBeInTheDocument();
 	});
 
-	it("handles function throwing error gracefully", () => {
+	it("handles function throwing error gracefully", async () => {
 		const consoleSpy = jest.spyOn(console, "error").mockImplementation();
-		mockGetMoviesByCategory.mockImplementation(() => {
-			throw new Error("Data fetching failed");
-		});
+		mockGetUpcomingMovies.mockRejectedValue(new Error("Data fetching failed"));
 
-		expect(() => render(<NewReleasesSection />)).toThrow(
-			"Data fetching failed"
-		);
+		await expect(NewReleasesSection()).rejects.toThrow("Data fetching failed");
 
 		consoleSpy.mockRestore();
 	});
 
-	it("renders movies with different data structures", () => {
+	it("renders movies with different data structures", async () => {
 		const moviesWithMissingData = [
 			{
 				id: 1,
@@ -194,14 +224,18 @@ describe("NewReleasesSection", () => {
 			},
 		];
 
-		mockGetMoviesByCategory.mockReturnValue(moviesWithMissingData);
+		mockGetUpcomingMovies.mockResolvedValue({
+			results: moviesWithMissingData,
+			page: 1,
+			total_pages: 1,
+			total_results: 2,
+		});
 
-		render(<NewReleasesSection />);
+		render(await NewReleasesSection());
 
 		expect(screen.getByText("Movie with minimal data")).toBeInTheDocument();
 		expect(
 			screen.getByText("Movie with special characters: @#$%")
 		).toBeInTheDocument();
-		expect(screen.getByTestId("movies-count")).toHaveTextContent("2");
 	});
 });

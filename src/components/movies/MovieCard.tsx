@@ -12,9 +12,14 @@ import { useInView } from "react-intersection-observer";
 interface MovieCardProps {
 	movie: Movie;
 	index: number;
+	"data-testid"?: string;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
+const MovieCard: React.FC<MovieCardProps> = ({
+	movie,
+	index,
+	"data-testid": dataTestId,
+}) => {
 	const router = useRouter();
 	const { isFavorite, addFavorite, removeFavorite } = useFavorites();
 	const favorite = isFavorite(movie.id);
@@ -46,6 +51,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 			transition={{ duration: 0.3, delay: index * 0.1 }}
 			className="movie-card card relative group cursor-pointer"
 			onClick={handleNavigate}
+			data-testid={dataTestId}
 		>
 			{/* Movie poster */}
 			<div className="relative aspect-[2/3] overflow-hidden w-[300px]">

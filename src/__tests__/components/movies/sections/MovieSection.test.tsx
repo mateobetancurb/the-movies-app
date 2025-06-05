@@ -3,9 +3,9 @@ import "@testing-library/jest-dom";
 import MovieSection from "../../../../components/movies/sections/MovieSection";
 import { Movie } from "../../../../interfaces";
 
-// Mock the MovieGrid component
-jest.mock("../../../../components/movies/MovieGrid", () => {
-	return function MockMovieGrid({
+// Mock the MovieCarousel component
+jest.mock("../../../../components/movies/MovieCarousel", () => {
+	return function MockMovieCarousel({
 		movies,
 		title,
 		emptyMessage,
@@ -75,7 +75,7 @@ describe("MovieSection", () => {
 		expect(screen.getByTestId("movie-2")).toHaveTextContent("Test Movie 2");
 	});
 
-	it("passes all props correctly to MovieGrid", () => {
+	it("passes all props correctly to MovieCarousel", () => {
 		render(
 			<MovieSection
 				title="Custom Title"
@@ -211,7 +211,7 @@ describe("MovieSection", () => {
 	it("component is accessible and semantic", () => {
 		render(<MovieSection title="Accessibility Test" movies={mockMovies} />);
 
-		// Check that the MovieGrid component is rendered which should handle accessibility
+		// Check that the MovieCarousel component is rendered which should handle accessibility
 		expect(screen.getByTestId("movie-grid")).toBeInTheDocument();
 
 		// Verify that title is passed correctly for accessibility
