@@ -1,10 +1,16 @@
-import { getMoviesByCategory } from "@/src/data/movies";
 import MovieSection from "./MovieSection";
+import { getUpcomingMovies } from "@/src/services/movieService";
 
-const NewReleasesSection = () => {
-	const newReleasesMovies = getMoviesByCategory(3);
+const NewReleasesSection = async () => {
+	const newReleasesMovies = await getUpcomingMovies();
 
-	return <MovieSection title="New Releases" movies={newReleasesMovies} />;
+	return (
+		<MovieSection
+			title="New Releases"
+			movies={newReleasesMovies.results}
+			emptyMessage="No new releases found"
+		/>
+	);
 };
 
 export default NewReleasesSection;
