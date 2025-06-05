@@ -36,7 +36,6 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 		}
 	};
 
-	// Make sure genres is always an array
 	const genres = movie.genres || [];
 
 	return (
@@ -44,12 +43,12 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index }) => {
 			ref={ref}
 			initial={{ opacity: 0, y: 20 }}
 			animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-			transition={{ duration: 0.5, delay: index * 0.1 }}
+			transition={{ duration: 0.3, delay: index * 0.1 }}
 			className="movie-card card relative group cursor-pointer"
 			onClick={handleNavigate}
 		>
 			{/* Movie poster */}
-			<div className="relative aspect-[2/3] overflow-hidden">
+			<div className="relative aspect-[2/3] overflow-hidden w-[300px]">
 				<Image
 					src={movie.poster_path || ""}
 					alt={`${movie.title} poster`}

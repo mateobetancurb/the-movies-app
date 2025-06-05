@@ -1,5 +1,5 @@
 import { Movie } from "@/src/interfaces";
-import MovieGrid from "@/src/components/movies/MovieGrid";
+import MovieCarousel from "@/src/components/movies/MovieCarousel";
 
 interface MovieSectionProps {
 	title: string;
@@ -13,7 +13,7 @@ const MovieSection: React.FC<MovieSectionProps> = ({
 	emptyMessage = "No movies available",
 }) => {
 	return (
-		<MovieGrid movies={movies} title={title} emptyMessage={emptyMessage} />
+		<MovieCarousel movies={movies} title={title} emptyMessage={emptyMessage} />
 	);
 };
 
