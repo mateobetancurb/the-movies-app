@@ -11,16 +11,21 @@ The project uses Jest and React Testing Library for unit testing and component t
 ```
 src/__tests__/
 ├── components/
-│   └── movies/
-│       ├── MovieHero.test.tsx      # Tests for MovieHero component
-│       ├── MovieCard.test.tsx      # Tests for MovieCard component
-│       ├── MovieCarousel.test.tsx  # Tests for MovieCarousel component
-│       ├── MovieGrid.test.tsx      # Tests for MovieGrid component
-│       └── sections/
-│           ├── MovieSection.test.tsx        # Tests for shared MovieSection component
-│           ├── NewReleasesSection.test.tsx  # Tests for NewReleasesSection component
-│           ├── TopRatedSection.test.tsx     # Tests for TopRatedSection component
-│           └── TrendingNowSection.test.tsx  # Tests for TrendingNowSection component
+│   ├── layout/
+│   │   ├── Navbar.test.tsx         # Tests for Navbar component
+│   │   └── Footer.test.tsx         # Tests for Footer component
+│   ├── movies/
+│   │   ├── MovieHero.test.tsx      # Tests for MovieHero component
+│   │   ├── MovieCard.test.tsx      # Tests for MovieCard component
+│   │   ├── MovieCarousel.test.tsx  # Tests for MovieCarousel component
+│   │   ├── MovieGrid.test.tsx      # Tests for MovieGrid component
+│   │   └── sections/
+│   │       ├── MovieSection.test.tsx        # Tests for shared MovieSection component
+│   │       ├── NewReleasesSection.test.tsx  # Tests for NewReleasesSection component
+│   │       ├── TopRatedSection.test.tsx     # Tests for TopRatedSection component
+│   │       └── TrendingNowSection.test.tsx  # Tests for TrendingNowSection component
+│   └── ui/
+├── context/
 └── services/
     ├── getFeaturedMovie.test.ts    # Tests for getFeaturedMovie function
     └── movieService.test.ts        # Comprehensive tests for all movieService functions
@@ -87,6 +92,15 @@ npm test -- --testPathPattern="NewReleasesSection|TopRatedSection|TrendingNowSec
 
 # Run specific combination of tests
 npm test -- --testPathPattern="MovieCard|MovieCarousel|MovieGrid|sections/"
+
+# Run layout component tests
+npm test -- --testPathPattern="layout/"
+
+# Run Navbar tests only
+npm test -- --testPathPattern="Navbar"
+
+# Run Footer tests only
+npm test -- --testPathPattern="Footer"
 ```
 
 ### Run Tests with Coverage
@@ -236,6 +250,42 @@ The tests currently cover:
 - ✅ Validates async component behavior with delayed responses
 - ✅ Tests concurrent API calls and re-render preservation
 
+### Navbar Component (`src/components/layout/Navbar.tsx`)
+
+- ✅ Renders navbar with brand logo and title correctly
+- ✅ Displays desktop navigation links (Home, Categories, Favorites)
+- ✅ Shows mobile menu button with proper ARIA attributes
+- ✅ Toggles mobile menu state when button is clicked
+- ✅ Displays mobile menu links with icons when opened
+- ✅ Closes mobile menu automatically on pathname changes
+- ✅ Adds and removes scroll event listeners properly
+- ✅ Applies scrolled styles when scrolled past threshold (10px)
+- ✅ Removes scrolled styles when scrolled back to top
+- ✅ Handles responsive design with proper CSS classes
+- ✅ Provides proper semantic HTML structure (header, nav)
+- ✅ Maintains accessibility with ARIA labels and keyboard navigation
+- ✅ Handles edge cases (rapid toggles, boundary scroll values)
+- ✅ Processes multiple pathname changes while menu is open
+- ✅ Supports proper focus management and screen reader compatibility
+
+### Footer Component (`src/components/layout/Footer.tsx`)
+
+- ✅ Renders footer with brand logo, title, and description
+- ✅ Displays navigation section with proper heading and links
+- ✅ Shows categories section with genre links (Action, Drama, Sci-Fi, Comedy)
+- ✅ Renders social media section with icons (GitHub, Twitter, Instagram)
+- ✅ Displays copyright notice with dynamically updated year
+- ✅ Applies responsive grid layout (1 column mobile, 4 columns desktop)
+- ✅ Maintains proper semantic HTML structure (footer, contentinfo)
+- ✅ Provides proper heading hierarchy (H3 for section titles)
+- ✅ Ensures accessibility with proper ARIA labels for social links
+- ✅ Handles link validation for internal and external links
+- ✅ Renders all icons with correct sizing and styling
+- ✅ Maintains consistent spacing and visual hierarchy
+- ✅ Supports proper color contrast for text elements
+- ✅ Organizes content in logical sections with proper separation
+- ✅ Validates year display with different date scenarios
+
 ### MovieService (`src/services/movieService.ts`)
 
 #### Complete API Coverage
@@ -344,6 +394,24 @@ The tests currently cover:
 - Uses custom mock implementations to test data flow and component behavior
 - Validates async component patterns with Promise-based mocking
 - Tests error handling with console.error mocking for clean test output
+
+### Layout Component Tests
+
+- **Navbar Component**:
+
+  - Mocks `next/navigation` (usePathname) for routing behavior
+  - Mocks `next/link` component for link testing
+  - Mocks `lucide-react` icons for UI testing
+  - Mocks `window.addEventListener` and `window.removeEventListener` for scroll testing
+  - Mocks `window.scrollY` property for scroll position testing
+  - Uses `@testing-library/user-event` for realistic user interactions
+
+- **Footer Component**:
+  - Mocks `next/link` component for navigation link testing
+  - Mocks `lucide-react` icons for brand and social media icons
+  - Mocks `Date` constructor and `getFullYear` for consistent year testing
+  - Tests component composition and semantic HTML structure
+  - Validates responsive design and accessibility features
 
 ### MovieService Tests
 
@@ -500,11 +568,12 @@ process.env.TMDB_API_KEY = "test-api-key";
 
 ## Test Summary
 
-The Movies App now has comprehensive test coverage with **196 total tests passing**:
+The Movies App now has comprehensive test coverage with **247 total tests passing**:
 
-- **Component Tests**: 144 tests covering all React components
+- **Component Tests**: 195 tests covering all React components
   - MovieHero, MovieCard, MovieCarousel, MovieGrid: Core movie display components
   - **Movie Sections**: 52 tests for NewReleasesSection, TopRatedSection, TrendingNowSection, and shared MovieSection
+  - **Layout Components**: 51 tests for Navbar (22 tests) and Footer (29 tests)
   - UI Components: LoadingSpinner and other interface components
 - **Service Tests**: 35 tests for movieService with 97.72% coverage
 - **Context Tests**: 15 tests for FavoritesContext
@@ -512,6 +581,7 @@ The Movies App now has comprehensive test coverage with **196 total tests passin
 
 ### Coverage Highlights
 
+- **Layout Components**: 100% statement, branch, function, and line coverage for Navbar and Footer
 - **Movie Section Components**: 100% statement, branch, function, and line coverage
 - **Core Movie Components**: 100% coverage for MovieCard, MovieCarousel, MovieGrid, MovieHero
 - **Movie Service**: 97.72% statement coverage with comprehensive API testing
