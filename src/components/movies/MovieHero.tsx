@@ -19,6 +19,7 @@ const MovieHero: React.FC<MovieHeroProps> = ({ movie }) => {
 						className="w-full h-full object-cover"
 						width={1000}
 						height={1000}
+						priority
 					/>
 				) : (
 					<div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
