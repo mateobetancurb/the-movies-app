@@ -148,7 +148,7 @@ The tests currently cover:
 - ✅ Shows only first two genres to maintain layout
 - ✅ Handles movies without runtime, genres, or release date
 - ✅ Formats vote averages with proper decimal places
-- ✅ Navigates to movie detail page when clicked
+- ✅ Navigates to movie detail page when clicked (tests Link href)
 - ✅ Adds/removes movies from favorites with proper state management
 - ✅ Prevents event bubbling on favorite button clicks
 - ✅ Displays correct favorite button states (filled/unfilled heart)
@@ -415,7 +415,7 @@ The tests currently cover:
 ### MovieCard Component Tests
 
 - Mocks `FavoritesContext` hooks for favorite management
-- Mocks `next/navigation` router for navigation
+- Mocks `next/link` component for navigation testing
 - Mocks `next/image` component for poster display
 - Mocks `framer-motion` for animation testing
 - Mocks `react-intersection-observer` for performance testing
@@ -645,7 +645,7 @@ process.env.TMDB_API_KEY = "test-api-key";
 
 ## Test Summary
 
-The Movies App now has comprehensive test coverage with **294 total tests passing**:
+The Movies App now has comprehensive test coverage with **293 total tests passing**:
 
 - **Component Tests**: 242 tests covering all React components
   - MovieHero, MovieCard, MovieCarousel, MovieGrid, MovieCast: Core movie display components
