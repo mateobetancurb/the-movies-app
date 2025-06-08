@@ -27,6 +27,7 @@ src/__tests__/
 │   │       ├── TopRatedSection.test.tsx            # Tests for TopRatedSection component
 │   │       └── TrendingNowSection.test.tsx         # Tests for TrendingNowSection component
 │   └── ui/
+│       └── SearchBar.test.tsx      # Tests for SearchBar component
 ├── context/
 └── services/
     ├── getFeaturedMovie.test.ts    # Tests for getFeaturedMovie function
@@ -109,6 +110,12 @@ npm test -- --testPathPattern="Navbar"
 
 # Run Footer tests only
 npm test -- --testPathPattern="Footer"
+
+# Run SearchBar tests only
+npm test -- --testPathPattern="SearchBar"
+
+# Run UI component tests
+npm test -- --testPathPattern="ui/"
 ```
 
 ### Run Tests with Coverage
@@ -338,6 +345,29 @@ The tests currently cover:
 - ✅ Organizes content in logical sections with proper separation
 - ✅ Validates year display with different date scenarios
 
+### SearchBar Component (`src/components/ui/SearchBar.tsx`)
+
+- ✅ Renders search input with default and custom placeholders
+- ✅ Displays search and clear icons with proper styling and positioning
+- ✅ Applies correct CSS classes for dark theme styling and responsiveness
+- ✅ Initializes with query value from URL search parameters
+- ✅ Shows/hides clear button based on input state
+- ✅ Handles user input changes and special/unicode characters
+- ✅ Submits form via both form submission and search button click
+- ✅ Updates URL parameters with search query and preserves existing params
+- ✅ Trims whitespace from search queries before submission
+- ✅ Removes query parameter when submitting empty searches
+- ✅ Calls optional onSearch callback with trimmed query values
+- ✅ Prevents default form submission behavior for SPA navigation
+- ✅ Clears input and URL parameters when clear button is clicked
+- ✅ Maintains proper form structure and semantic HTML (form, searchbox)
+- ✅ Provides accessibility with proper button labels and keyboard navigation
+- ✅ Handles edge cases (rapid typing, very long queries, null params)
+- ✅ Works correctly with and without onSearch callback
+- ✅ Integrates properly with Next.js navigation hooks
+- ✅ Maintains focus and usability after clearing search
+- ✅ Positions elements correctly with responsive layout classes
+
 ### MovieService (`src/services/movieService.ts`)
 
 #### Complete API Coverage
@@ -470,11 +500,20 @@ The tests currently cover:
   - Uses `@testing-library/user-event` for realistic user interactions
 
 - **Footer Component**:
+
   - Mocks `next/link` component for navigation link testing
   - Mocks `lucide-react` icons for brand and social media icons
   - Mocks `Date` constructor and `getFullYear` for consistent year testing
   - Tests component composition and semantic HTML structure
   - Validates responsive design and accessibility features
+
+- **SearchBar Component**:
+  - Mocks `next/navigation` hooks (useSearchParams, usePathname, useRouter) for routing behavior
+  - Mocks `lucide-react` icons (Search, X) for UI testing
+  - Mocks global `URLSearchParams` constructor for URL manipulation testing
+  - Uses `@testing-library/user-event` for realistic user interactions
+  - Tests form submission, input handling, and URL parameter management
+  - Validates search functionality with edge cases and accessibility features
 
 ### MovieService Tests
 
@@ -645,13 +684,13 @@ process.env.TMDB_API_KEY = "test-api-key";
 
 ## Test Summary
 
-The Movies App now has comprehensive test coverage with **293 total tests passing**:
+The Movies App now has comprehensive test coverage with **333 total tests passing**:
 
-- **Component Tests**: 242 tests covering all React components
+- **Component Tests**: 281 tests covering all React components
   - MovieHero, MovieCard, MovieCarousel, MovieGrid, MovieCast: Core movie display components
   - **Movie Sections**: 72 tests for NewReleasesSection, SimilarMoviesYouMightLike, TopRatedSection, TrendingNowSection, and shared MovieSection
   - **Layout Components**: 51 tests for Navbar (22 tests) and Footer (29 tests)
-  - UI Components: LoadingSpinner and other interface components
+  - **UI Components**: 45 tests for SearchBar (40 tests) and LoadingSpinner (5 tests)
 - **Service Tests**: 35 tests for movieService with 97.72% coverage
 - **Context Tests**: 15 tests for FavoritesContext
 - **Helper Tests**: 2 tests for utility functions
@@ -659,6 +698,7 @@ The Movies App now has comprehensive test coverage with **293 total tests passin
 ### Coverage Highlights
 
 - **Layout Components**: 100% statement, branch, function, and line coverage for Navbar and Footer
+- **UI Components**: 100% statement, branch, function, and line coverage for SearchBar
 - **Movie Section Components**: 100% statement, branch, function, and line coverage
 - **Core Movie Components**: 100% coverage for MovieCard, MovieCarousel, MovieGrid, MovieHero, MovieCast
 - **Movie Service**: 97.72% statement coverage with comprehensive API testing
