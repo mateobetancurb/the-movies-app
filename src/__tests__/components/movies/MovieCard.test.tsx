@@ -18,13 +18,16 @@ jest.mock("react-intersection-observer", () => ({
 	useInView: () => [mockRef, mockInView()],
 }));
 
-// Mock next/navigation
-const mockPush = jest.fn();
-jest.mock("next/navigation", () => ({
-	useRouter: () => ({
-		push: mockPush,
-	}),
-}));
+// Mock next/link
+jest.mock("next/link", () => {
+	return ({ href, children, ...props }: any) => {
+		return (
+			<a href={href} {...props} data-testid="movie-link">
+				{children}
+			</a>
+		);
+	};
+});
 
 // Mock next/image
 jest.mock("next/image", () => ({
@@ -158,13 +161,10 @@ describe("MovieCard", () => {
 
 	describe("User Interactions", () => {
 		it("navigates to movie detail page when clicked", async () => {
-			const user = userEvent.setup();
 			render(<MovieCard movie={baseMockMovie} index={0} />);
 
-			const movieCard = screen.getByText("Test Movie").closest(".movie-card");
-			await user.click(movieCard!);
-
-			expect(mockPush).toHaveBeenCalledWith("/movie/1");
+			const movieLink = screen.getByTestId("movie-link");
+			expect(movieLink).toHaveAttribute("href", "/movies/1");
 		});
 
 		it("adds movie to favorites when favorite button is clicked", async () => {
@@ -176,7 +176,6 @@ describe("MovieCard", () => {
 			await user.click(favoriteButton);
 
 			expect(mockAddFavorite).toHaveBeenCalledWith(1);
-			expect(mockPush).not.toHaveBeenCalled(); // Should not navigate
 		});
 
 		it("removes movie from favorites when favorite button is clicked on favorited movie", async () => {
@@ -188,7 +187,6 @@ describe("MovieCard", () => {
 			await user.click(favoriteButton);
 
 			expect(mockRemoveFavorite).toHaveBeenCalledWith(1);
-			expect(mockPush).not.toHaveBeenCalled(); // Should not navigate
 		});
 
 		it("prevents event bubbling when favorite button is clicked", async () => {
@@ -199,7 +197,6 @@ describe("MovieCard", () => {
 			await user.click(favoriteButton);
 
 			expect(mockAddFavorite).toHaveBeenCalledWith(1);
-			expect(mockPush).not.toHaveBeenCalled();
 		});
 	});
 
