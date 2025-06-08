@@ -1,84 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React, { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import {
-	movieCategories,
-	getMoviesByCategory,
-	getMoviesByGenre,
-} from "../../data/movies";
-import MovieGrid from "../movies/MovieGrid";
-import CategoryCard from "./CategoryCard";
-import GenresList from "./GenresList";
-import SearchBar from "../ui/SearchBar";
-import { Genre } from "../../interfaces";
+import React, { useState } from "react";
+import MovieGrid from "@/src/components/movies/MovieGrid";
+import CategoryCard from "@/src/components/categories/CategoryCard";
+import SearchBar from "@/src/components/ui/SearchBar";
+import { Genre } from "@/src/interfaces";
 
 interface MainContentProps {
 	genres: Genre[];
 }
 
 export default function MainContent({ genres }: MainContentProps) {
-	const searchParams = useSearchParams();
-	const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-		null
-	);
-	const [selectedGenreId, setSelectedGenreId] = useState<number | null>(null);
 	const [searchQuery, setSearchQuery] = useState("");
-
-	useEffect(() => {
-		const categoryId = searchParams.get("id");
-		const genreId = searchParams.get("genre");
-
-		if (categoryId) {
-			setSelectedCategoryId(parseInt(categoryId));
-			setSelectedGenreId(null);
-		} else if (genreId) {
-			setSelectedGenreId(parseInt(genreId));
-			setSelectedCategoryId(null);
-		} else {
-			setSelectedCategoryId(null);
-			setSelectedGenreId(null);
-		}
-	}, [searchParams]);
 
 	const handleSearch = (query: string) => {
 		setSearchQuery(query);
-		if (query) {
-			setSelectedCategoryId(null);
-			setSelectedGenreId(null);
-		}
 	};
-
-	const selectedCategory = selectedCategoryId
-		? movieCategories.find((cat) => cat.id === selectedCategoryId)
-		: null;
-
-	const selectedGenre = selectedGenreId
-		? genres.find((genre) => genre.id === selectedGenreId)
-		: null;
-
-	const getDisplayMovies = () => {
-		if (selectedCategoryId) {
-			return getMoviesByCategory(selectedCategoryId);
-		}
-
-		if (selectedGenreId) {
-			return getMoviesByGenre(selectedGenreId);
-		}
-
-		if (searchQuery) {
-			return genres
-				.filter((genre) =>
-					genre.name.toLowerCase().includes(searchQuery.toLowerCase())
-				)
-				.flatMap((genre) => getMoviesByGenre(genre.id));
-		}
-
-		return [];
-	};
-
-	const displayMovies = getDisplayMovies();
 
 	return (
 		<motion.div
@@ -108,7 +46,7 @@ export default function MainContent({ genres }: MainContentProps) {
 				/>
 			</motion.div>
 
-			{!selectedCategoryId && !selectedGenreId && !searchQuery && (
+			{!searchQuery && (
 				<>
 					<section className="my-8">
 						<motion.h2
@@ -120,28 +58,25 @@ export default function MainContent({ genres }: MainContentProps) {
 							Featured Collections
 						</motion.h2>
 						<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-							{movieCategories.map((category, index) => (
+							{genres.map((category, index) => (
 								<CategoryCard
 									key={category.id}
-									category={category}
+									category={{
+										...category,
+										description: category.name,
+									}}
 									index={index}
 								/>
 							))}
 						</div>
 					</section>
-
-					<GenresList genres={genres} title="Browse by Genre" />
 				</>
 			)}
 
-			{(selectedCategoryId || selectedGenreId || searchQuery) && (
+			{searchQuery && (
 				<MovieGrid
-					movies={displayMovies}
-					title={
-						selectedCategory?.name ||
-						selectedGenre?.name ||
-						`Search results for "${searchQuery}"`
-					}
+					movies={[]}
+					title={`Search results for "${searchQuery}"`}
 					emptyMessage="No movies found in this category"
 				/>
 			)}

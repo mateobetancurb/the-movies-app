@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-import { getGenres } from "../../services/movieService";
-import MainContent from "../../components/categories/MainContent";
-import { Genre } from "../../interfaces";
+import { getGenres } from "@/src/services/movieService";
+import MainContent from "@/src/components/categories/MainContent";
+import { Genre } from "@/src/interfaces";
 
 export default async function CategoriesPage() {
 	const genres: Genre[] = await getGenres();
@@ -9,8 +9,8 @@ export default async function CategoriesPage() {
 	return (
 		<Suspense
 			fallback={
-				<div className="container-page pt-24 text-white">
-					Loading categories...
+				<div className="flex items-center justify-center h-screen">
+					<div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-white"></div>
 				</div>
 			}
 		>
