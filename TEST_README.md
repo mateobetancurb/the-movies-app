@@ -20,10 +20,11 @@ src/__tests__/
 │   │   ├── MovieCarousel.test.tsx  # Tests for MovieCarousel component
 │   │   ├── MovieGrid.test.tsx      # Tests for MovieGrid component
 │   │   └── sections/
-│   │       ├── MovieSection.test.tsx        # Tests for shared MovieSection component
-│   │       ├── NewReleasesSection.test.tsx  # Tests for NewReleasesSection component
-│   │       ├── TopRatedSection.test.tsx     # Tests for TopRatedSection component
-│   │       └── TrendingNowSection.test.tsx  # Tests for TrendingNowSection component
+│   │       ├── MovieSection.test.tsx               # Tests for shared MovieSection component
+│   │       ├── NewReleasesSection.test.tsx         # Tests for NewReleasesSection component
+│   │       ├── SimilarMoviesYouMightLike.test.tsx  # Tests for SimilarMoviesYouMightLike component
+│   │       ├── TopRatedSection.test.tsx            # Tests for TopRatedSection component
+│   │       └── TrendingNowSection.test.tsx         # Tests for TrendingNowSection component
 │   └── ui/
 ├── context/
 └── services/
@@ -66,6 +67,9 @@ npm test -- --testPathPattern="MovieSection"
 # Run NewReleasesSection tests only
 npm test -- --testPathPattern="NewReleasesSection"
 
+# Run SimilarMoviesYouMightLike tests only
+npm test -- --testPathPattern="SimilarMoviesYouMightLike"
+
 # Run TopRatedSection tests only
 npm test -- --testPathPattern="TopRatedSection"
 
@@ -88,7 +92,7 @@ npm test -- --testPathPattern="services/"
 npm test -- --testPathPattern="MovieHero|MovieCard|MovieCarousel|MovieGrid"
 
 # Run all movie section tests
-npm test -- --testPathPattern="NewReleasesSection|TopRatedSection|TrendingNowSection|MovieSection"
+npm test -- --testPathPattern="NewReleasesSection|SimilarMoviesYouMightLike|TopRatedSection|TrendingNowSection|MovieSection"
 
 # Run specific combination of tests
 npm test -- --testPathPattern="MovieCard|MovieCarousel|MovieGrid|sections/"
@@ -231,6 +235,26 @@ The tests currently cover:
 - ✅ Processes API response with minimal required fields
 - ✅ Validates async component behavior and data loading
 - ✅ Tests concurrent API calls and component state preservation
+
+### SimilarMoviesYouMightLike Component (`src/components/movies/sections/SimilarMoviesYouMightLike.tsx`)
+
+- ✅ Renders Similar Movies section with correct title
+- ✅ Calls getSimilarMovies service function with correct movieId parameter
+- ✅ Renders movies from API response results
+- ✅ Passes movies.results to MovieSection component
+- ✅ Passes correct empty message ("No similar movies found") to MovieSection
+- ✅ Handles empty API response gracefully
+- ✅ Supports single similar movie and multiple movies
+- ✅ Handles large numbers of similar movies in response
+- ✅ Handles different movieId parameters correctly (positive, zero, negative, large numbers)
+- ✅ Manages API service errors with proper error handling
+- ✅ Handles network timeout and rate limit errors
+- ✅ Processes malformed similar movies API response structures
+- ✅ Renders similar movies with special characters and unicode
+- ✅ Handles movies with minimal required fields only
+- ✅ Validates async component behavior with delayed responses
+- ✅ Tests concurrent API calls and component state preservation
+- ✅ Edge case testing for various movieId parameter values
 
 ### TrendingNowSection Component (`src/components/movies/sections/TrendingNowSection.tsx`)
 
@@ -389,11 +413,13 @@ The tests currently cover:
 
 - **MovieSection**: Mocks `MovieGrid` component to isolate wrapper functionality
 - **NewReleasesSection**: Mocks `getMoviesByCategory` from data/movies and `MovieSection`
+- **SimilarMoviesYouMightLike**: Mocks `getSimilarMovies` service function and `MovieSection`
 - **TopRatedSection**: Mocks `getTopRatedMovies` service function and `MovieSection`
 - **TrendingNowSection**: Mocks `getTrendingMovies` service function and `MovieSection`
 - Uses custom mock implementations to test data flow and component behavior
 - Validates async component patterns with Promise-based mocking
 - Tests error handling with console.error mocking for clean test output
+- Tests parameter validation and edge cases for movieId-based components
 
 ### Layout Component Tests
 
@@ -469,7 +495,7 @@ When adding new tests:
 
 ### ✅ Movie Section Components Test Suite (Completed Successfully)
 
-The movie section components now have comprehensive test coverage with **all 52 section tests passing**:
+The movie section components now have comprehensive test coverage with **all 72 section tests passing**:
 
 #### MovieSection Component (12 tests)
 
@@ -486,6 +512,18 @@ The movie section components now have comprehensive test coverage with **all 52 
 - **Component Rendering**: Tests title display and movie data passing
 - **Error Handling**: Handles function errors gracefully
 - **Data Variety**: Tests with different data structures and special characters
+
+#### SimilarMoviesYouMightLike Component (20 tests)
+
+- **API Integration**: Tests async integration with `getSimilarMovies` service
+- **Parameter Handling**: Validates correct movieId parameter passing and various edge cases
+- **Component Rendering**: Tests title display and custom empty message ("No similar movies found")
+- **Response Processing**: Validates handling of API response results and data flow
+- **Error Scenarios**: Network timeouts, API failures, rate limits, malformed responses
+- **Edge Cases**: Zero, negative, and very large movieId values
+- **Async Behavior**: Tests Promise handling, delayed responses, and concurrent calls
+- **Data Processing**: Special characters, unicode, minimal data fields, large datasets
+- **State Management**: Component lifecycle and re-render preservation
 
 #### TopRatedSection Component (13 tests)
 
@@ -568,11 +606,11 @@ process.env.TMDB_API_KEY = "test-api-key";
 
 ## Test Summary
 
-The Movies App now has comprehensive test coverage with **247 total tests passing**:
+The Movies App now has comprehensive test coverage with **267 total tests passing**:
 
-- **Component Tests**: 195 tests covering all React components
+- **Component Tests**: 215 tests covering all React components
   - MovieHero, MovieCard, MovieCarousel, MovieGrid: Core movie display components
-  - **Movie Sections**: 52 tests for NewReleasesSection, TopRatedSection, TrendingNowSection, and shared MovieSection
+  - **Movie Sections**: 72 tests for NewReleasesSection, SimilarMoviesYouMightLike, TopRatedSection, TrendingNowSection, and shared MovieSection
   - **Layout Components**: 51 tests for Navbar (22 tests) and Footer (29 tests)
   - UI Components: LoadingSpinner and other interface components
 - **Service Tests**: 35 tests for movieService with 97.72% coverage
