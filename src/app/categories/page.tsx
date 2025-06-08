@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-import { getGenres } from "../../services/movieService";
-import MainContent from "../../components/categories/MainContent";
-import { Genre } from "../../interfaces";
+import { getGenres } from "@/src/services/movieService";
+import MainContent from "@/src/components/categories/MainContent";
+import { Genre } from "@/src/interfaces";
 
 export default async function CategoriesPage() {
 	const genres: Genre[] = await getGenres();
