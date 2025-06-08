@@ -19,6 +19,7 @@ src/__tests__/
 │   │   ├── MovieCard.test.tsx      # Tests for MovieCard component
 │   │   ├── MovieCarousel.test.tsx  # Tests for MovieCarousel component
 │   │   ├── MovieGrid.test.tsx      # Tests for MovieGrid component
+│   │   ├── MovieCast.test.tsx      # Tests for MovieCast component
 │   │   └── sections/
 │   │       ├── MovieSection.test.tsx               # Tests for shared MovieSection component
 │   │       ├── NewReleasesSection.test.tsx         # Tests for NewReleasesSection component
@@ -61,6 +62,9 @@ npm test -- --testPathPattern="MovieCarousel"
 # Run MovieGrid tests only
 npm test -- --testPathPattern="MovieGrid"
 
+# Run MovieCast tests only
+npm test -- --testPathPattern="MovieCast"
+
 # Run MovieSection tests only
 npm test -- --testPathPattern="MovieSection"
 
@@ -89,13 +93,13 @@ npm test -- --testPathPattern="movieService"
 npm test -- --testPathPattern="services/"
 
 # Run all movie component tests
-npm test -- --testPathPattern="MovieHero|MovieCard|MovieCarousel|MovieGrid"
+npm test -- --testPathPattern="MovieHero|MovieCard|MovieCarousel|MovieGrid|MovieCast"
 
 # Run all movie section tests
 npm test -- --testPathPattern="NewReleasesSection|SimilarMoviesYouMightLike|TopRatedSection|TrendingNowSection|MovieSection"
 
 # Run specific combination of tests
-npm test -- --testPathPattern="MovieCard|MovieCarousel|MovieGrid|sections/"
+npm test -- --testPathPattern="MovieCard|MovieCarousel|MovieGrid|MovieCast|sections/"
 
 # Run layout component tests
 npm test -- --testPathPattern="layout/"
@@ -189,6 +193,30 @@ The tests currently cover:
 - ✅ Provides accessible section labeling
 - ✅ Integrates correctly with Framer Motion animations
 - ✅ Validates props gracefully (undefined/empty values)
+
+### MovieCast Component (`src/components/movies/MovieCast.tsx`)
+
+- ✅ Renders cast section with multiple cast members correctly
+- ✅ Displays actor names with proper H3 heading structure
+- ✅ Shows character names with appropriate styling
+- ✅ Handles profile images with proper alt text and dimensions
+- ✅ Displays User icon fallback when profile_path is null
+- ✅ Applies responsive grid layout (2-6 columns based on screen size)
+- ✅ Centers cast member content with proper text alignment
+- ✅ Handles empty cast arrays gracefully (no rendering)
+- ✅ Manages null/undefined cast props without errors
+- ✅ Processes cast members with special characters and unicode
+- ✅ Handles large cast arrays efficiently (20+ members)
+- ✅ Displays minimal cast data with missing properties
+- ✅ Applies correct CSS classes for image containers
+- ✅ Maintains proper semantic HTML structure (section, headings)
+- ✅ Provides accessibility with proper heading hierarchy
+- ✅ Handles undefined and missing required properties gracefully
+- ✅ Processes very long actor and character names
+- ✅ Integrates well with typical TMDB cast data structure
+- ✅ Ensures consistent spacing and layout classes
+- ✅ Optimizes performance for large cast rendering
+- ✅ Uses proper image sizing (100x100) and responsive classes
 
 ### MovieSection Component (`src/components/movies/sections/MovieSection.tsx`)
 
@@ -409,6 +437,15 @@ The tests currently cover:
 - Tests component composition and data flow
 - Validates responsive grid layout behavior
 
+### MovieCast Component Tests
+
+- Mocks `next/image` component for actor profile images
+- Mocks `lucide-react` User icon for profile fallbacks
+- Tests component rendering with various cast data structures
+- Validates image handling (with and without profile_path)
+- Tests responsive grid layout and CSS class application
+- Validates accessibility features and semantic HTML structure
+
 ### Movie Section Component Tests
 
 - **MovieSection**: Mocks `MovieGrid` component to isolate wrapper functionality
@@ -576,16 +613,18 @@ The movie section components (`NewReleasesSection`, `TopRatedSection`, `Trending
 - **Data Processing**: Special characters, unicode, minimal/complex data structures
 - **State Management**: Re-renders, prop changes, component lifecycle
 
-### MovieCard, MovieCarousel, and MovieGrid Components
+### MovieCard, MovieCarousel, MovieGrid, and MovieCast Components
 
 These components have comprehensive test coverage including:
 
 - **User Interactions**: Navigation, favorites management, click handling
 - **Carousel Functionality**: Navigation controls, responsive layouts, item display
+- **Cast Display**: Actor images, character information, profile fallbacks
 - **Edge Cases**: Missing data, null values, empty states
 - **Accessibility**: ARIA labels, keyboard navigation, semantic HTML
 - **Performance**: Animation integration, intersection observers
 - **Visual States**: Hover effects, CSS classes, responsive layout
+- **International Content**: Special characters, unicode, long names
 
 ## Troubleshooting
 
@@ -606,10 +645,10 @@ process.env.TMDB_API_KEY = "test-api-key";
 
 ## Test Summary
 
-The Movies App now has comprehensive test coverage with **267 total tests passing**:
+The Movies App now has comprehensive test coverage with **294 total tests passing**:
 
-- **Component Tests**: 215 tests covering all React components
-  - MovieHero, MovieCard, MovieCarousel, MovieGrid: Core movie display components
+- **Component Tests**: 242 tests covering all React components
+  - MovieHero, MovieCard, MovieCarousel, MovieGrid, MovieCast: Core movie display components
   - **Movie Sections**: 72 tests for NewReleasesSection, SimilarMoviesYouMightLike, TopRatedSection, TrendingNowSection, and shared MovieSection
   - **Layout Components**: 51 tests for Navbar (22 tests) and Footer (29 tests)
   - UI Components: LoadingSpinner and other interface components
@@ -621,7 +660,7 @@ The Movies App now has comprehensive test coverage with **267 total tests passin
 
 - **Layout Components**: 100% statement, branch, function, and line coverage for Navbar and Footer
 - **Movie Section Components**: 100% statement, branch, function, and line coverage
-- **Core Movie Components**: 100% coverage for MovieCard, MovieCarousel, MovieGrid, MovieHero
+- **Core Movie Components**: 100% coverage for MovieCard, MovieCarousel, MovieGrid, MovieHero, MovieCast
 - **Movie Service**: 97.72% statement coverage with comprehensive API testing
 - **Context Management**: 95.45% coverage for state management
 
