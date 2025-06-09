@@ -8,7 +8,7 @@ interface CastMemberProps {
 
 const CastMember = ({ person }: CastMemberProps) => {
 	return (
-		<div key={person?.id} className="text-center">
+		<div className="text-center">
 			<div className="w-full aspect-square bg-gray-800 rounded-full flex items-center justify-center mb-2">
 				{person?.profile_path ? (
 					<Image
