@@ -10,6 +10,10 @@ The project uses Jest and React Testing Library for unit testing and component t
 
 ```
 src/__tests__/
+├── app/
+│   ├── layout.test.tsx             # Tests for RootLayout component
+│   ├── loading.test.tsx            # Tests for Loading component
+│   └── not-found.test.tsx          # Tests for NotFound component
 ├── components/
 │   ├── layout/
 │   │   ├── Navbar.test.tsx         # Tests for Navbar component
@@ -116,6 +120,18 @@ npm test -- --testPathPattern="SearchBar"
 
 # Run UI component tests
 npm test -- --testPathPattern="ui/"
+
+# Run app-level component tests
+npm test -- --testPathPattern="app/"
+
+# Run RootLayout tests only
+npm test -- --testPathPattern="layout.test"
+
+# Run Loading tests only
+npm test -- --testPathPattern="loading.test"
+
+# Run NotFound tests only
+npm test -- --testPathPattern="not-found.test"
 ```
 
 ### Run Tests with Coverage
@@ -133,6 +149,55 @@ npm test -- --verbose
 ## Test Coverage
 
 The tests currently cover:
+
+### RootLayout Component (`src/app/layout.tsx`)
+
+- ✅ Renders layout components correctly with proper mocking strategy
+- ✅ Exports correct font variables configuration (Geist Sans and Mono)
+- ✅ Applies correct CSS class structure for children components
+- ✅ Handles different children types (string, complex JSX structures)
+- ✅ Handles unicode and special characters in children content
+- ✅ Exports correct metadata object with title and description
+- ✅ Has proper SEO-friendly title and meta description
+- ✅ Includes relevant keywords in description (search, movies, trailers, favorite)
+- ✅ Validates font configuration is properly called
+- ✅ Tests component integration and structure validation
+
+### Loading Component (`src/app/loading.tsx`)
+
+- ✅ Renders loading component with correct structure and role attributes
+- ✅ Displays loading spinner with proper CSS classes and styling
+- ✅ Centers loading spinner correctly using flexbox
+- ✅ Has proper accessibility attributes (role="status")
+- ✅ Uses full screen height (h-screen) for proper centering
+- ✅ Uses white border color for visibility on dark backgrounds
+- ✅ Has consistent spinner dimensions (20x20) and circular shape
+- ✅ Applies correct border styling for spinner animation effect
+- ✅ Maintains proper component structure and DOM hierarchy
+- ✅ Renders without any text content (purely visual)
+- ✅ Can be rendered multiple times without conflicts
+- ✅ Has no interactive elements (buttons, links, inputs)
+- ✅ Uses appropriate CSS classes for responsive design
+- ✅ Provides proper loading state indication
+
+### NotFound Component (`src/app/not-found.tsx`)
+
+- ✅ Renders 404 page with correct semantic structure (main element)
+- ✅ Displays Film icon with correct styling and dimensions
+- ✅ Shows correct 404 heading (H1) with proper styling
+- ✅ Displays "Page Not Found" heading (H2) with appropriate classes
+- ✅ Shows descriptive error message with helpful information
+- ✅ Provides "Back to Home" link with correct href and styling
+- ✅ Maintains proper heading hierarchy (H1 before H2)
+- ✅ Uses semantic HTML structure with proper ARIA roles
+- ✅ Applies responsive container styling and layout classes
+- ✅ Uses appropriate text colors for dark theme (gray-700, gray-400)
+- ✅ Has proper margin spacing between elements
+- ✅ Constrains error message width for readability (max-w-md)
+- ✅ Uses appropriate font weights and sizes for visual hierarchy
+- ✅ Has accessible error message content with clear explanations
+- ✅ Provides clear navigation back to home page
+- ✅ Maintains visual hierarchy with proper element ordering
 
 ### MovieHero Component (`src/components/movies/MovieHero.tsx`)
 
@@ -515,6 +580,36 @@ The tests currently cover:
   - Tests form submission, input handling, and URL parameter management
   - Validates search functionality with edge cases and accessibility features
 
+### App-Level Component Tests
+
+- **RootLayout Component**:
+
+  - Mocks `next/font/google` to test font configuration (Geist Sans and Mono)
+  - Mocks layout components (`Navbar` and `Footer`) to isolate layout functionality
+  - Tests metadata export and SEO configuration
+  - Uses simplified testing approach to avoid HTML nesting issues in jsdom
+  - Tests component integration and font variable setup
+  - Handles various children types (string, complex JSX) in isolation
+  - Validates component module loading and configuration
+
+- **Loading Component**:
+
+  - Tests pure component rendering without external dependencies
+  - Validates CSS class application and responsive design
+  - Tests accessibility attributes (role="status")
+  - Ensures proper animation and styling for loading spinner
+  - Tests component isolation and re-rendering capabilities
+  - Validates semantic structure and visual hierarchy
+
+- **NotFound Component**:
+  - Mocks `next/link` component for navigation testing
+  - Mocks `lucide-react` Film icon for UI consistency
+  - Tests semantic HTML structure (main, headings, links)
+  - Validates accessibility and heading hierarchy
+  - Tests responsive design and CSS class application
+  - Validates user experience and navigation functionality
+  - Tests error message content and visual design
+
 ### MovieService Tests
 
 - Mocks global `fetch` function for API calls
@@ -684,8 +779,12 @@ process.env.TMDB_API_KEY = "test-api-key";
 
 ## Test Summary
 
-The Movies App now has comprehensive test coverage with **333 total tests passing**:
+The Movies App now has comprehensive test coverage with **377 total tests passing**:
 
+- **App-Level Tests**: 44 tests covering core Next.js app structure
+  - **RootLayout**: 10 tests for layout structure, metadata, and children handling
+  - **Loading**: 15 tests for loading spinner, accessibility, and styling
+  - **NotFound**: 19 tests for 404 page, navigation, and user experience
 - **Component Tests**: 281 tests covering all React components
   - MovieHero, MovieCard, MovieCarousel, MovieGrid, MovieCast: Core movie display components
   - **Movie Sections**: 72 tests for NewReleasesSection, SimilarMoviesYouMightLike, TopRatedSection, TrendingNowSection, and shared MovieSection
@@ -697,6 +796,7 @@ The Movies App now has comprehensive test coverage with **333 total tests passin
 
 ### Coverage Highlights
 
+- **App-Level Components**: 100% statement, branch, function, and line coverage for RootLayout, Loading, and NotFound
 - **Layout Components**: 100% statement, branch, function, and line coverage for Navbar and Footer
 - **UI Components**: 100% statement, branch, function, and line coverage for SearchBar
 - **Movie Section Components**: 100% statement, branch, function, and line coverage
