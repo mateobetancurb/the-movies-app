@@ -15,6 +15,8 @@ src/__tests__/
 │   ├── loading.test.tsx            # Tests for Loading component
 │   └── not-found.test.tsx          # Tests for NotFound component
 ├── components/
+│   ├── core/
+│   │   └── GoBackButton.test.tsx   # Tests for GoBackButton component
 │   ├── layout/
 │   │   ├── Navbar.test.tsx         # Tests for Navbar component
 │   │   └── Footer.test.tsx         # Tests for Footer component
@@ -118,8 +120,14 @@ npm test -- --testPathPattern="Footer"
 # Run SearchBar tests only
 npm test -- --testPathPattern="SearchBar"
 
+# Run GoBackButton tests only
+npm test -- --testPathPattern="GoBackButton"
+
 # Run UI component tests
 npm test -- --testPathPattern="ui/"
+
+# Run core component tests
+npm test -- --testPathPattern="core/"
 
 # Run app-level component tests
 npm test -- --testPathPattern="app/"
@@ -433,6 +441,27 @@ The tests currently cover:
 - ✅ Maintains focus and usability after clearing search
 - ✅ Positions elements correctly with responsive layout classes
 
+### GoBackButton Component (`src/components/core/GoBackButton.tsx`)
+
+- ✅ Renders go back button with correct "Go Back" text
+- ✅ Displays arrow left icon with proper styling (w-5, h-5 classes)
+- ✅ Applies correct CSS classes to link (flex, items-center, gap-2, mt-20, mb-10, hover:underline)
+- ✅ Renders with correct href prop for navigation
+- ✅ Maintains proper semantic structure (Link wrapping icon and text)
+- ✅ Renders icon before text in correct DOM order
+- ✅ Has proper link role and accessibility attributes
+- ✅ Provides accessible text content for screen readers
+- ✅ Icon has proper accessibility attributes (role="img", aria-label)
+- ✅ Handles different href values (root path, nested paths, query parameters, hash)
+- ✅ Supports external URLs correctly
+- ✅ Handles edge cases (empty href, special characters, unicode)
+- ✅ Maintains component isolation and can be rendered multiple times
+- ✅ Preserves consistent structure across re-renders
+- ✅ Integrates properly with Next.js Link component
+- ✅ Integrates properly with Lucide React ArrowLeftIcon
+- ✅ Renders span element with correct text content
+- ✅ Applies hover effects and responsive styling correctly
+
 ### MovieService (`src/services/movieService.ts`)
 
 #### Complete API Coverage
@@ -552,6 +581,18 @@ The tests currently cover:
 - Validates async component patterns with Promise-based mocking
 - Tests error handling with console.error mocking for clean test output
 - Tests parameter validation and edge cases for movieId-based components
+
+### Core Component Tests
+
+- **GoBackButton Component**:
+  - Mocks `next/link` component for navigation testing
+  - Mocks `lucide-react` ArrowLeftIcon for UI testing
+  - Tests component composition and prop handling
+  - Validates CSS class application and styling
+  - Tests accessibility features and semantic HTML structure
+  - Validates href handling for various path types and edge cases
+  - Tests component isolation and re-rendering behavior
+  - Validates integration with Next.js navigation and icon library
 
 ### Layout Component Tests
 
@@ -779,13 +820,14 @@ process.env.TMDB_API_KEY = "test-api-key";
 
 ## Test Summary
 
-The Movies App now has comprehensive test coverage with **377 total tests passing**:
+The Movies App now has comprehensive test coverage with **400 total tests passing**:
 
 - **App-Level Tests**: 44 tests covering core Next.js app structure
   - **RootLayout**: 10 tests for layout structure, metadata, and children handling
   - **Loading**: 15 tests for loading spinner, accessibility, and styling
   - **NotFound**: 19 tests for 404 page, navigation, and user experience
-- **Component Tests**: 281 tests covering all React components
+- **Component Tests**: 304 tests covering all React components
+  - **Core Components**: 23 tests for GoBackButton navigation component
   - MovieHero, MovieCard, MovieCarousel, MovieGrid, MovieCast: Core movie display components
   - **Movie Sections**: 72 tests for NewReleasesSection, SimilarMoviesYouMightLike, TopRatedSection, TrendingNowSection, and shared MovieSection
   - **Layout Components**: 51 tests for Navbar (22 tests) and Footer (29 tests)
@@ -797,6 +839,7 @@ The Movies App now has comprehensive test coverage with **377 total tests passin
 ### Coverage Highlights
 
 - **App-Level Components**: 100% statement, branch, function, and line coverage for RootLayout, Loading, and NotFound
+- **Core Components**: 100% statement, branch, function, and line coverage for GoBackButton
 - **Layout Components**: 100% statement, branch, function, and line coverage for Navbar and Footer
 - **UI Components**: 100% statement, branch, function, and line coverage for SearchBar
 - **Movie Section Components**: 100% statement, branch, function, and line coverage
