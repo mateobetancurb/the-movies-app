@@ -1,3 +1,5 @@
+"use client";
+
 import React, {
 	createContext,
 	useState,
@@ -29,14 +31,22 @@ interface FavoritesProviderProps {
 export const FavoritesProvider: React.FC<FavoritesProviderProps> = ({
 	children,
 }) => {
-	const [favorites, setFavorites] = useState<number[]>(() => {
-		const storedFavorites = localStorage.getItem("favorites");
-		return storedFavorites ? JSON.parse(storedFavorites) : [];
-	});
+	const [favorites, setFavorites] = useState<number[]>([]);
+	const [isClient, setIsClient] = useState(false);
 
 	useEffect(() => {
-		localStorage.setItem("favorites", JSON.stringify(favorites));
-	}, [favorites]);
+		setIsClient(true);
+		const storedFavorites = localStorage.getItem("favorites");
+		if (storedFavorites) {
+			setFavorites(JSON.parse(storedFavorites));
+		}
+	}, []);
+
+	useEffect(() => {
+		if (isClient) {
+			localStorage.setItem("favorites", JSON.stringify(favorites));
+		}
+	}, [favorites, isClient]);
 
 	const addFavorite = (movieId: number) => {
 		setFavorites((prev) => [...prev, movieId]);
