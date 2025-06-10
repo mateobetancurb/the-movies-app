@@ -136,15 +136,27 @@ export const searchMovies = async (
 	query: string,
 	page: number = 1
 ): Promise<PaginatedResponse<Movie>> => {
-	if (!query.trim()) {
+	const trimmedQuery = query.trim();
+	if (!trimmedQuery) {
 		return { page: 1, results: [], total_pages: 0, total_results: 0 };
 	}
-	const data = await fetchTMDB<PaginatedResponse<any>>(
-		"search/movie",
-		{ query, page },
-		{ revalidate: 3600 }
-	);
-	return processPaginatedMovies(data);
+
+	const validPage = Math.max(1, Math.min(page, 1000));
+
+	try {
+		const data = await fetchTMDB<PaginatedResponse<any>>(
+			"search/movie",
+			{ query: trimmedQuery, page: validPage },
+			{ revalidate: 3600 }
+		);
+		return processPaginatedMovies(data);
+	} catch (error) {
+		console.error(
+			`Error searching for movies with query "${trimmedQuery}":`,
+			error
+		);
+		return { page: validPage, results: [], total_pages: 0, total_results: 0 };
+	}
 };
 
 interface CreditsResponse {

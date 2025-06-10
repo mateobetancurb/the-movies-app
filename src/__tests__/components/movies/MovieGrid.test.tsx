@@ -108,12 +108,14 @@ describe("MovieGrid", () => {
 			const gridContainer = screen.getByTestId("movie-card-1").parentElement;
 			expect(gridContainer).toHaveClass(
 				"grid",
-				"grid-cols-2",
+				"grid-cols-1",
 				"sm:grid-cols-3",
 				"md:grid-cols-4",
 				"lg:grid-cols-5",
 				"gap-4",
-				"md:gap-6"
+				"md:gap-6",
+				"mb-10",
+				"md:mb-20"
 			);
 		});
 	});

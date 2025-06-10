@@ -21,6 +21,26 @@ jest.mock("lucide-react", () => ({
 	),
 }));
 
+// Mock SearchSuggestions component
+jest.mock("../../../components/ui/SearchSuggestions", () => {
+	return function MockSearchSuggestions({
+		isVisible,
+		query,
+		onSuggestionClick,
+	}: {
+		isVisible: boolean;
+		query: string;
+		onSuggestionClick: (suggestion: string) => void;
+	}) {
+		if (!isVisible) return null;
+		return (
+			<div data-testid="search-suggestions">
+				<div>Suggestions for: {query}</div>
+			</div>
+		);
+	};
+});
+
 describe("SearchBar", () => {
 	const mockReplace = jest.fn();
 	const mockSearchParams = {
@@ -38,13 +58,24 @@ describe("SearchBar", () => {
 		(useRouter as jest.Mock).mockReturnValue({
 			replace: mockReplace,
 		});
-		(usePathname as jest.Mock).mockReturnValue("/movies");
+		(usePathname as jest.Mock).mockReturnValue("/");
 		(useSearchParams as jest.Mock).mockReturnValue(mockSearchParams);
 
 		// Mock URLSearchParams constructor
 		global.URLSearchParams = jest
 			.fn()
 			.mockImplementation(() => mockURLSearchParams);
+
+		// Mock localStorage
+		const mockLocalStorage = {
+			getItem: jest.fn(),
+			setItem: jest.fn(),
+			removeItem: jest.fn(),
+		};
+		Object.defineProperty(window, "localStorage", {
+			value: mockLocalStorage,
+			writable: true,
+		});
 	});
 
 	describe("Rendering", () => {
@@ -54,7 +85,7 @@ describe("SearchBar", () => {
 			expect(
 				screen.getByPlaceholderText("Search for movies...")
 			).toBeInTheDocument();
-			expect(screen.getByTestId("search-icon")).toBeInTheDocument();
+			expect(screen.getAllByTestId("search-icon")).toHaveLength(2); // One for visual indicator, one for submit button
 			expect(
 				screen.getByRole("button", { name: "Search" })
 			).toBeInTheDocument();
@@ -84,15 +115,28 @@ describe("SearchBar", () => {
 				"focus:ring-accent-500",
 				"focus:border-accent-500",
 				"placeholder-gray-400",
-				"text-white"
+				"text-white",
+				"transition-all",
+				"duration-200",
+				"hover:border-gray-600"
 			);
 		});
 
 		it("displays search icon with correct styling", () => {
 			render(<SearchBar />);
 
-			const searchIcon = screen.getByTestId("search-icon");
-			expect(searchIcon).toHaveClass("w-5", "h-5", "text-gray-500");
+			const searchIcons = screen.getAllByTestId("search-icon");
+			const visualIcon = searchIcons[0]; // First one is the visual indicator
+			expect(visualIcon).toHaveClass(
+				"absolute",
+				"left-3",
+				"top-1/2",
+				"transform",
+				"-translate-y-1/2",
+				"text-gray-400",
+				"w-4",
+				"h-4"
+			);
 		});
 
 		it("displays search button with correct styling", () => {
@@ -101,19 +145,17 @@ describe("SearchBar", () => {
 			const searchButton = screen.getByRole("button", { name: "Search" });
 			expect(searchButton).toHaveClass(
 				"absolute",
-				"right-2.5",
-				"bottom-2.5",
-				"px-4",
-				"py-2",
-				"text-sm",
-				"font-medium",
-				"text-white",
+				"right-2",
+				"top-1/2",
+				"transform",
+				"-translate-y-1/2",
 				"bg-accent-600",
-				"rounded-lg",
 				"hover:bg-accent-700",
-				"focus:ring-4",
-				"focus:outline-none",
-				"focus:ring-accent-800"
+				"text-white",
+				"px-3",
+				"py-2",
+				"rounded-md",
+				"transition-colors"
 			);
 		});
 	});
@@ -209,7 +251,7 @@ describe("SearchBar", () => {
 			fireEvent.submit(form!);
 
 			expect(mockURLSearchParams.set).toHaveBeenCalledWith("q", "iron man");
-			expect(mockReplace).toHaveBeenCalledWith("/movies?");
+			expect(mockReplace).toHaveBeenCalledWith("/?");
 		});
 
 		it("submits form by clicking search button", async () => {
@@ -223,7 +265,7 @@ describe("SearchBar", () => {
 			await user.click(searchButton);
 
 			expect(mockURLSearchParams.set).toHaveBeenCalledWith("q", "thor");
-			expect(mockReplace).toHaveBeenCalledWith("/movies?");
+			expect(mockReplace).toHaveBeenCalledWith("/?");
 		});
 
 		it("trims whitespace from search query before submission", async () => {
@@ -329,7 +371,7 @@ describe("SearchBar", () => {
 			await user.click(clearButton!);
 
 			expect(mockURLSearchParams.delete).toHaveBeenCalledWith("q");
-			expect(mockReplace).toHaveBeenCalledWith("/movies?");
+			expect(mockReplace).toHaveBeenCalledWith("/?");
 		});
 
 		it("calls onSearch callback with empty string when cleared", async () => {
@@ -370,19 +412,13 @@ describe("SearchBar", () => {
 			const clearButton = screen.getByTestId("x-icon").closest("button");
 			expect(clearButton).toHaveClass(
 				"absolute",
-				"inset-y-0",
-				"right-14",
-				"flex",
-				"items-center",
-				"pr-3"
-			);
-
-			const xIcon = screen.getByTestId("x-icon");
-			expect(xIcon).toHaveClass(
-				"w-5",
-				"h-5",
+				"right-12",
+				"top-1/2",
+				"transform",
+				"-translate-y-1/2",
 				"text-gray-400",
-				"hover:text-white"
+				"hover:text-white",
+				"transition-colors"
 			);
 		});
 	});
@@ -399,7 +435,7 @@ describe("SearchBar", () => {
 			await user.type(input, "test");
 			fireEvent.submit(form!);
 
-			expect(mockReplace).toHaveBeenCalledWith("/categories?");
+			expect(mockReplace).toHaveBeenCalledWith("/?");
 		});
 
 		it("preserves existing search parameters", () => {
@@ -418,7 +454,7 @@ describe("SearchBar", () => {
 			fireEvent.submit(form!);
 
 			expect(mockReplace).toHaveBeenCalledWith(
-				"/movies?genre=action&sort=rating&q=test"
+				"/?genre=action&sort=rating&q=test"
 			);
 		});
 
@@ -531,6 +567,7 @@ describe("SearchBar", () => {
 
 			const clearButton = screen.getByTestId("x-icon").closest("button");
 			expect(clearButton).toHaveAttribute("type", "button");
+			expect(clearButton).toHaveAttribute("aria-label", "Clear search");
 		});
 
 		it("maintains focus after clearing", async () => {
@@ -562,27 +599,29 @@ describe("SearchBar", () => {
 		it("positions elements correctly with CSS classes", () => {
 			render(<SearchBar />);
 
-			const form = document.querySelector("form");
-			expect(form).toHaveClass("relative", "w-full", "max-w-2xl", "mx-auto");
+			const container = document.querySelector(
+				".relative.w-full.max-w-2xl.mx-auto"
+			);
+			expect(container).toBeInTheDocument();
 
-			const inputContainer = form!.firstChild as HTMLElement;
-			expect(inputContainer).toHaveClass("relative");
+			const form = document.querySelector("form");
+			expect(form).toHaveClass("relative");
 		});
 
 		it("search icon is positioned as expected", () => {
 			render(<SearchBar />);
 
-			const searchIcon = screen.getByTestId("search-icon");
-			const iconContainer = searchIcon.parentElement;
-
-			expect(iconContainer).toHaveClass(
+			const searchIcons = screen.getAllByTestId("search-icon");
+			const visualIcon = searchIcons[0]; // First one is the visual indicator
+			expect(visualIcon).toHaveClass(
 				"absolute",
-				"inset-y-0",
-				"left-0",
-				"flex",
-				"items-center",
-				"pl-3",
-				"pointer-events-none"
+				"left-3",
+				"top-1/2",
+				"transform",
+				"-translate-y-1/2",
+				"text-gray-400",
+				"w-4",
+				"h-4"
 			);
 		});
 	});
