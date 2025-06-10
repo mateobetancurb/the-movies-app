@@ -5,7 +5,7 @@ import { useInView } from "react-intersection-observer";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { MovieCategory } from "../../interfaces/index";
+import { MovieCategory } from "@/src/interfaces/index";
 
 interface CategoryCardProps {
 	category: MovieCategory;
@@ -36,7 +36,6 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, index }) => {
 				<h3 className="text-xl font-bold mb-2 group-hover:text-accent-400 transition-colors">
 					{category.name}
 				</h3>
-				<p className="text-gray-400 text-sm mb-4">{category.description}</p>
 				<div className="flex items-center text-accent-400 text-sm font-medium">
 					<span>Browse movies</span>
 					<ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
