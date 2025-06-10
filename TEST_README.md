@@ -11,6 +11,10 @@ The project uses Jest and React Testing Library for unit testing and component t
 ```
 src/__tests__/
 ├── app/
+│   ├── categories/
+│   │   ├── page.test.tsx           # Tests for CategoriesPage component
+│   │   └── [id]/
+│   │       └── page.test.tsx       # Tests for CategoryPage component
 │   ├── layout.test.tsx             # Tests for RootLayout component
 │   ├── loading.test.tsx            # Tests for Loading component
 │   └── not-found.test.tsx          # Tests for NotFound component
@@ -140,6 +144,15 @@ npm test -- --testPathPattern="loading.test"
 
 # Run NotFound tests only
 npm test -- --testPathPattern="not-found.test"
+
+# Run CategoriesPage tests only
+npm test -- --testPathPattern="categories/page"
+
+# Run CategoryPage tests only
+npm test -- --testPathPattern="categories/\\[id\\]/page"
+
+# Run all categories page tests
+npm test -- --testPathPattern="categories/"
 ```
 
 ### Run Tests with Coverage
@@ -297,6 +310,48 @@ The tests currently cover:
 - ✅ Ensures consistent spacing and layout classes
 - ✅ Optimizes performance for large cast rendering
 - ✅ Uses proper image sizing (100x100) and responsive classes
+
+### CategoriesPage Component (`src/app/categories/page.tsx`)
+
+- ✅ Renders categories page with genres fetched from API service
+- ✅ Displays Suspense component with proper loading fallback spinner
+- ✅ Passes genres array correctly to MainContent component
+- ✅ Calls getGenres service function with no parameters
+- ✅ Handles empty genres array gracefully
+- ✅ Supports single genre and large numbers of genres (20+ items)
+- ✅ Processes genres with special characters and unicode
+- ✅ Maintains proper component structure and hierarchy
+- ✅ Renders as async server component with Promise handling
+- ✅ Handles API service errors gracefully with proper error propagation
+- ✅ Supports concurrent renders without conflicts
+- ✅ Validates Suspense fallback with correct CSS classes and styling
+- ✅ Ensures proper integration with MainContent component
+- ✅ Tests component isolation with strategic mocking
+
+### CategoryPage Component (`src/app/categories/[id]/page.tsx`)
+
+- ✅ Renders category page with movies fetched from API by genre ID
+- ✅ Displays correct category name from GENRE_MAP lookup
+- ✅ Shows fallback category name for unknown genre IDs
+- ✅ Renders GoBackButton with correct href ("/categories")
+- ✅ Applies proper CSS classes to container (container-page)
+- ✅ Maintains correct heading hierarchy (H1 with proper styling)
+- ✅ Calls getMoviesByGenre service with correct numeric genre ID
+- ✅ Passes movies.results array to MovieGrid component
+- ✅ Handles empty movies response gracefully
+- ✅ Supports single movie and large numbers of movies (20+ items)
+- ✅ Processes different genre IDs correctly (Action, Comedy, Drama, Sci-Fi, Horror)
+- ✅ Handles string IDs with leading zeros and converts to numbers
+- ✅ Manages edge case genre IDs (0, negative numbers, very large numbers)
+- ✅ Awaits params promise correctly with delayed resolution
+- ✅ Processes movies with special characters in titles
+- ✅ Maintains proper component structure and element hierarchy
+- ✅ Renders as async server component with Promise handling
+- ✅ Handles API service errors gracefully with proper error propagation
+- ✅ Supports concurrent renders with different genre IDs
+- ✅ Validates proper integration with MovieGrid and GoBackButton components
+- ✅ Tests parameter conversion from string to number
+- ✅ Ensures component isolation with strategic mocking
 
 ### MovieSection Component (`src/components/movies/sections/MovieSection.tsx`)
 
@@ -651,6 +706,27 @@ The tests currently cover:
   - Validates user experience and navigation functionality
   - Tests error message content and visual design
 
+### Category Page Tests
+
+- **CategoriesPage Component**:
+
+  - Mocks `getGenres` service function for API testing
+  - Mocks `MainContent` component to isolate page functionality
+  - Tests async server component behavior with Promise handling
+  - Validates Suspense component and loading fallback
+  - Tests error handling with console.error mocking for clean test output
+  - Validates genre data flow and component integration
+
+- **CategoryPage Component**:
+  - Mocks `getMoviesByGenre` service function for API testing
+  - Mocks `MovieGrid` component to isolate page functionality
+  - Mocks `GoBackButton` component for navigation testing
+  - Tests async server component behavior with params Promise handling
+  - Uses `GENRE_MAP` integration for category name resolution
+  - Tests parameter conversion from string to number
+  - Validates error handling with console.error mocking for clean test output
+  - Tests concurrent API calls and component state preservation
+
 ### MovieService Tests
 
 - Mocks global `fetch` function for API calls
@@ -820,12 +896,14 @@ process.env.TMDB_API_KEY = "test-api-key";
 
 ## Test Summary
 
-The Movies App now has comprehensive test coverage with **400 total tests passing**:
+The Movies App now has comprehensive test coverage with **433 total tests passing**:
 
-- **App-Level Tests**: 44 tests covering core Next.js app structure
+- **App-Level Tests**: 77 tests covering core Next.js app structure
   - **RootLayout**: 10 tests for layout structure, metadata, and children handling
   - **Loading**: 15 tests for loading spinner, accessibility, and styling
   - **NotFound**: 19 tests for 404 page, navigation, and user experience
+  - **CategoriesPage**: 13 tests for main categories page with genres display
+  - **CategoryPage**: 20 tests for individual category page with movies by genre
 - **Component Tests**: 304 tests covering all React components
   - **Core Components**: 23 tests for GoBackButton navigation component
   - MovieHero, MovieCard, MovieCarousel, MovieGrid, MovieCast: Core movie display components
@@ -838,7 +916,7 @@ The Movies App now has comprehensive test coverage with **400 total tests passin
 
 ### Coverage Highlights
 
-- **App-Level Components**: 100% statement, branch, function, and line coverage for RootLayout, Loading, and NotFound
+- **App-Level Components**: 100% statement, branch, function, and line coverage for RootLayout, Loading, NotFound, CategoriesPage, and CategoryPage
 - **Core Components**: 100% statement, branch, function, and line coverage for GoBackButton
 - **Layout Components**: 100% statement, branch, function, and line coverage for Navbar and Footer
 - **UI Components**: 100% statement, branch, function, and line coverage for SearchBar
