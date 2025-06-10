@@ -95,11 +95,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
 		setQuery(newQuery);
+
+		// Show suggestions when user starts typing
+		if (showSuggestions && isFocused) {
+			setShowSuggestionsDropdown(true);
+		}
 	};
 
 	const handleFocus = () => {
 		setIsFocused(true);
-		if (showSuggestions && !query) {
+		if (showSuggestions) {
 			setShowSuggestionsDropdown(true);
 		}
 	};
