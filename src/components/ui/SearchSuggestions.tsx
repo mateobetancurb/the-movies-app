@@ -1,12 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Search, Clock, TrendingUp } from "lucide-react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { Search, Clock, TrendingUp, Film } from "lucide-react";
 
 interface SearchSuggestionsProps {
 	onSuggestionClick: (suggestion: string) => void;
 	isVisible: boolean;
 	query: string;
+}
+
+interface MovieSuggestion {
+	id: number;
+	title: string;
 }
 
 const popularSearches = [
@@ -28,6 +33,10 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 	query,
 }) => {
 	const [recentSearches, setRecentSearches] = useState<string[]>([]);
+	const [movieSuggestions, setMovieSuggestions] = useState<MovieSuggestion[]>(
+		[]
+	);
+	const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
 
 	useEffect(() => {
 		const saved = localStorage.getItem("recentMovieSearches");
@@ -39,6 +48,54 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 			}
 		}
 	}, []);
+
+	// Debounced search function for movie suggestions
+	const debouncedSearchMovies = useCallback(
+		useMemo(() => {
+			let timeoutId: NodeJS.Timeout;
+
+			return (searchQuery: string) => {
+				clearTimeout(timeoutId);
+
+				if (!searchQuery.trim() || searchQuery.length < 2) {
+					setMovieSuggestions([]);
+					setIsLoadingSuggestions(false);
+					return;
+				}
+
+				setIsLoadingSuggestions(true);
+
+				timeoutId = setTimeout(async () => {
+					try {
+						const response = await fetch(
+							`/api/search?q=${encodeURIComponent(searchQuery)}&page=1`
+						);
+						if (response.ok) {
+							const data = await response.json();
+							const suggestions =
+								data.results?.slice(0, 6).map((movie: any) => ({
+									id: movie.id,
+									title: movie.title,
+								})) || [];
+							setMovieSuggestions(suggestions);
+						} else {
+							setMovieSuggestions([]);
+						}
+					} catch (error) {
+						console.error("Error fetching movie suggestions:", error);
+						setMovieSuggestions([]);
+					} finally {
+						setIsLoadingSuggestions(false);
+					}
+				}, 300);
+			};
+		}, []),
+		[]
+	);
+
+	useEffect(() => {
+		debouncedSearchMovies(query);
+	}, [query, debouncedSearchMovies]);
 
 	const saveRecentSearch = (searchQuery: string) => {
 		if (!searchQuery.trim()) return;
@@ -72,7 +129,22 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 		search.toLowerCase().includes(query.toLowerCase())
 	);
 
-	const hasResults = filteredRecent.length > 0 || filteredPopular.length > 0;
+	// Filter out movie suggestions that already appear in recent or popular searches
+	const uniqueMovieSuggestions = movieSuggestions.filter((movie) => {
+		const title = movie.title.toLowerCase();
+		const isInRecent = filteredRecent.some(
+			(recent) => recent.toLowerCase() === title
+		);
+		const isInPopular = filteredPopular.some(
+			(popular) => popular.toLowerCase() === title
+		);
+		return !isInRecent && !isInPopular;
+	});
+
+	const hasResults =
+		filteredRecent.length > 0 ||
+		filteredPopular.length > 0 ||
+		uniqueMovieSuggestions.length > 0;
 
 	return (
 		<div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-50 max-h-80 overflow-y-auto">
@@ -106,6 +178,29 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 						</div>
 					)}
 
+					{/* Movie Suggestions */}
+					{uniqueMovieSuggestions.length > 0 && (
+						<div className="mb-4">
+							<div className="flex items-center px-2 py-1 text-xs text-gray-400 uppercase tracking-wide">
+								<Film className="w-3 h-3 mr-1" />
+								Movies
+								{isLoadingSuggestions && (
+									<div className="ml-2 animate-spin rounded-full h-3 w-3 border-t border-gray-400"></div>
+								)}
+							</div>
+							{uniqueMovieSuggestions.map((movie) => (
+								<button
+									key={`movie-${movie.id}`}
+									onClick={() => handleSuggestionClick(movie.title)}
+									className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-700 transition-colors flex items-center gap-2 text-sm"
+								>
+									<Film className="w-4 h-4 text-gray-500" />
+									<span className="text-white">{movie.title}</span>
+								</button>
+							))}
+						</div>
+					)}
+
 					{/* Popular Searches */}
 					{filteredPopular.length > 0 && (
 						<div>
@@ -125,10 +220,27 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 							))}
 						</div>
 					)}
+
+					{/* Loading state for movie suggestions */}
+					{isLoadingSuggestions &&
+						uniqueMovieSuggestions.length === 0 &&
+						query.length >= 2 && (
+							<div className="px-3 py-2 text-center text-gray-400 text-sm flex items-center justify-center gap-2">
+								<div className="animate-spin rounded-full h-4 w-4 border-t border-gray-400"></div>
+								Searching movies...
+							</div>
+						)}
 				</div>
 			) : query.length > 0 ? (
 				<div className="p-4 text-center text-gray-400 text-sm">
-					No suggestions found for "{query}"
+					{isLoadingSuggestions ? (
+						<div className="flex items-center justify-center gap-2">
+							<div className="animate-spin rounded-full h-4 w-4 border-t border-gray-400"></div>
+							Searching movies...
+						</div>
+					) : (
+						`No suggestions found for "${query}"`
+					)}
 				</div>
 			) : (
 				<div className="p-4 text-center text-gray-400 text-sm">
