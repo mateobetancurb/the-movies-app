@@ -49,7 +49,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
 				data-testid={dataTestId}
 			>
 				{/* Movie poster */}
-				<div className="relative aspect-[2/3] overflow-hidden w-[300px]">
+				<div className="relative aspect-[2/3] overflow-hidden w-full sm:w-[300px]">
 					<Image
 						src={movie.poster_path || ""}
 						alt={`${movie.title} poster`}
