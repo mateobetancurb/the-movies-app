@@ -23,9 +23,7 @@ export default async function Home({
 		let searchError = null;
 
 		try {
-			console.log("Server: Searching for:", searchQuery, "page:", currentPage);
 			searchResults = await searchMovies(searchQuery, currentPage);
-			console.log("Server: Found", searchResults.total_results, "results");
 		} catch (error) {
 			console.error("Server: Search error:", error);
 			searchError =
