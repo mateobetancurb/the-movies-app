@@ -12,7 +12,7 @@ jest.mock("framer-motion", () => ({
 }));
 
 // Mock the carousel components
-jest.mock("@/components/ui/carousel", () => ({
+jest.mock("../../../components/core/Carousel", () => ({
 	Carousel: ({ children, ...props }: any) => (
 		<div data-testid="carousel" {...props}>
 			{children}
