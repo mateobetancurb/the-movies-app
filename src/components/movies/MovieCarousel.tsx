@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Movie } from "../../interfaces";
+import { Movie } from "@/src/interfaces";
 import { motion } from "framer-motion";
 import {
 	Carousel,
@@ -9,7 +9,7 @@ import {
 	CarouselItem,
 	CarouselNext,
 	CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "@/src/components/core/Carousel";
 import MovieCard from "./MovieCard";
 
 interface MovieCarouselProps {

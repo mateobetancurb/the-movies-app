@@ -1,6 +1,6 @@
 import { getMoviesByGenre } from "@/src/services/movieService";
 import MovieGrid from "@/src/components/movies/MovieGrid";
-import { GENRE_MAP } from "@/src/helpers/genreHelpers";
+import { GENRE_MAP } from "@/src/helpers";
 import GoBackButton from "@/src/components/core/GoBackButton";
 
 export default async function CategoryPage({

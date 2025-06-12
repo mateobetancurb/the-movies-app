@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import React, { useState } from "react";
 import MovieGrid from "@/src/components/movies/MovieGrid";
 import CategoryCard from "@/src/components/categories/CategoryCard";
-import SearchBar from "@/src/components/ui/SearchBar";
+import SearchBar from "@/src/components/core/SearchBar";
 import { Genre } from "@/src/interfaces";
 
 interface MainContentProps {
