@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import LoadingSpinner from "../../../components/ui/LoadingSpinner";
+import LoadingSpinner from "../../../components/core/LoadingSpinner";
 
 describe("LoadingSpinner", () => {
 	it("renders with medium size by default", () => {

@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import SearchBar from "../../../components/ui/SearchBar";
+import SearchBar from "../../../components/core/SearchBar";
 
 // Mock next/navigation
 jest.mock("next/navigation", () => ({
@@ -22,7 +22,7 @@ jest.mock("lucide-react", () => ({
 }));
 
 // Mock SearchSuggestions component
-jest.mock("../../../components/ui/SearchSuggestions", () => {
+jest.mock("../../../components/core/SearchSuggestions", () => {
 	return function MockSearchSuggestions({
 		isVisible,
 		query,

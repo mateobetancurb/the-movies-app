@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import CategoryPage from "@/src/app/categories/[id]/page";
 import { getMoviesByGenre } from "@/src/services/movieService";
-import { GENRE_MAP } from "@/src/helpers/genreHelpers";
+import { GENRE_MAP } from "@/src/helpers";
 import { Movie, PaginatedResponse } from "@/src/interfaces";
 
 // Mock dependencies

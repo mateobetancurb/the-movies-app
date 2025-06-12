@@ -1,4 +1,6 @@
-import { Genre } from "../interfaces";
+import { Genre } from "@/src/interfaces";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export const GENRE_MAP: Record<number, string> = {
 	28: "Action",
@@ -37,3 +39,7 @@ export const convertGenreIdsToGenres = (genreIds?: number[]): Genre[] => {
 		name: GENRE_MAP[id] || `Genre ${id}`,
 	}));
 };
+
+export function cn(...inputs: ClassValue[]) {
+	return twMerge(clsx(inputs));
+}

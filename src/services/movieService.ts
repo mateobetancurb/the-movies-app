@@ -6,8 +6,8 @@ import {
 	PaginatedResponse,
 	MovieDetails,
 	TMDBConfiguration,
-} from "../interfaces";
-import { convertGenreIdsToGenres } from "../helpers/genreHelpers";
+} from "@/src/interfaces";
+import { convertGenreIdsToGenres } from "@/src/helpers";
 
 const API_KEY = process.env.TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";

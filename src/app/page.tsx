@@ -1,5 +1,5 @@
 import MovieHero from "@/src/components/movies/MovieHero";
-import SearchBar from "@/src/components/ui/SearchBar";
+import SearchBar from "@/src/components/core/SearchBar";
 import TrendingNowSection from "@/src/components/movies/sections/TrendingNowSection";
 import TopRatedSection from "@/src/components/movies/sections/TopRatedSection";
 import NewReleasesSection from "@/src/components/movies/sections/NewReleasesSection";
