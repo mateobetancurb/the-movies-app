@@ -32,7 +32,6 @@ export default function SearchResults({ query, page }: SearchResultsProps) {
 				return;
 			}
 
-			console.log("SearchResults: Starting search for:", query, "page:", page);
 			setLoading(true);
 			setError(null);
 
@@ -40,10 +39,8 @@ export default function SearchResults({ query, page }: SearchResultsProps) {
 				const apiUrl = `/api/search?q=${encodeURIComponent(
 					query
 				)}&page=${page}`;
-				console.log("SearchResults: Fetching from:", apiUrl);
 
 				const response = await fetch(apiUrl);
-				console.log("SearchResults: Response status:", response.status);
 
 				if (!response.ok) {
 					throw new Error(
@@ -52,18 +49,12 @@ export default function SearchResults({ query, page }: SearchResultsProps) {
 				}
 
 				const data = await response.json();
-				console.log("SearchResults: Received data:", {
-					total_results: data.total_results,
-					results_count: data.results?.length || 0,
-					first_movie: data.results?.[0]?.title,
-				});
 
 				if (mounted) {
 					setResults(data);
 					setLoading(false);
 				}
 			} catch (err) {
-				console.error("SearchResults: Error fetching movies:", err);
 				if (mounted) {
 					setError(
 						err instanceof Error ? err.message : "Failed to search movies"

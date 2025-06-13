@@ -147,7 +147,11 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 		uniqueMovieSuggestions.length > 0;
 
 	return (
-		<div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-50 max-h-80 overflow-y-auto">
+		<div
+			role="complementary"
+			aria-label="Search suggestions"
+			className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-50 max-h-80 overflow-y-auto"
+		>
 			{hasResults ? (
 				<div className="p-2">
 					{/* Recent Searches */}
@@ -161,6 +165,7 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 								<button
 									onClick={clearRecentSearches}
 									className="hover:text-white transition-colors"
+									aria-label="Clear recent searches"
 								>
 									Clear
 								</button>
@@ -170,6 +175,7 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 									key={`recent-${index}`}
 									onClick={() => handleSuggestionClick(search)}
 									className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-700 transition-colors flex items-center gap-2 text-sm"
+									aria-label={`Recent search: ${search}`}
 								>
 									<Search className="w-4 h-4 text-gray-500" />
 									<span className="text-white">{search}</span>
@@ -185,7 +191,11 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 								<Film className="w-3 h-3 mr-1" />
 								Movies
 								{isLoadingSuggestions && (
-									<div className="ml-2 animate-spin rounded-full h-3 w-3 border-t border-gray-400"></div>
+									<div
+										className="ml-2 animate-spin rounded-full h-3 w-3 border-t border-gray-400"
+										role="status"
+										aria-label="Loading movies"
+									/>
 								)}
 							</div>
 							{uniqueMovieSuggestions.map((movie) => (
@@ -193,6 +203,7 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 									key={`movie-${movie.id}`}
 									onClick={() => handleSuggestionClick(movie.title)}
 									className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-700 transition-colors flex items-center gap-2 text-sm"
+									aria-label={`Movie suggestion: ${movie.title}`}
 								>
 									<Film className="w-4 h-4 text-gray-500" />
 									<span className="text-white">{movie.title}</span>
@@ -213,6 +224,7 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 									key={`popular-${index}`}
 									onClick={() => handleSuggestionClick(search)}
 									className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-700 transition-colors flex items-center gap-2 text-sm"
+									aria-label={`Popular search: ${search}`}
 								>
 									<TrendingUp className="w-4 h-4 text-gray-500" />
 									<span className="text-white">{search}</span>
@@ -225,18 +237,32 @@ const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
 					{isLoadingSuggestions &&
 						uniqueMovieSuggestions.length === 0 &&
 						query.length >= 2 && (
-							<div className="px-3 py-2 text-center text-gray-400 text-sm flex items-center justify-center gap-2">
-								<div className="animate-spin rounded-full h-4 w-4 border-t border-gray-400"></div>
-								Searching movies...
+							<div
+								className="px-3 py-2 text-center text-gray-400 text-sm flex items-center justify-center gap-2"
+								role="status"
+								aria-label="Searching movies"
+							>
+								<div
+									className="animate-spin rounded-full h-4 w-4 border-t border-gray-400"
+									aria-hidden="true"
+								/>
+								<span>Searching movies...</span>
 							</div>
 						)}
 				</div>
 			) : query.length > 0 ? (
 				<div className="p-4 text-center text-gray-400 text-sm">
 					{isLoadingSuggestions ? (
-						<div className="flex items-center justify-center gap-2">
-							<div className="animate-spin rounded-full h-4 w-4 border-t border-gray-400"></div>
-							Searching movies...
+						<div
+							className="flex items-center justify-center gap-2"
+							role="status"
+							aria-label="Searching movies"
+						>
+							<div
+								className="animate-spin rounded-full h-4 w-4 border-t border-gray-400"
+								aria-hidden="true"
+							/>
+							<span>Searching movies...</span>
 						</div>
 					) : (
 						`No suggestions found for "${query}"`
