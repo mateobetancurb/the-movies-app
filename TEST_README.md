@@ -20,6 +20,7 @@ src/__tests__/
 │   └── not-found.test.tsx          # Tests for NotFound component
 ├── components/
 │   ├── core/
+│   │   ├── AddToFavoritesBtn.test.tsx  # Tests for AddToFavoritesBtn component
 │   │   ├── Button.test.tsx         # Tests for Button component
 │   │   ├── Carousel.test.tsx       # Tests for Carousel component
 │   │   ├── GoBackButton.test.tsx   # Tests for GoBackButton component
@@ -133,6 +134,9 @@ npm test -- --testPathPattern="Carousel"
 # Run Button tests only
 npm test -- --testPathPattern="Button"
 
+# Run AddToFavoritesBtn tests only
+npm test -- --testPathPattern="AddToFavoritesBtn"
+
 # Run GoBackButton tests only
 npm test -- --testPathPattern="GoBackButton"
 
@@ -228,6 +232,35 @@ expect(link.tagName).toBe("A");
 - ✅ Displays loading spinner with proper CSS classes and styling
 - ✅ Centers loading spinner correctly using flexbox
 - ✅ Has proper accessibility attributes (role="status")
+
+### AddToFavoritesBtn Component (`src/components/core/AddToFavoritesBtn.tsx`)
+
+- ✅ Renders add to favorites button when movie is not a favorite
+- ✅ Renders remove from favorites button when movie is a favorite
+- ✅ Renders heart icon in all states with proper accessibility
+- ✅ Applies correct CSS classes when movie is not a favorite (bg-gray-800, hover:bg-gray-700, text-white)
+- ✅ Applies correct CSS classes when movie is a favorite (btn-secondary)
+- ✅ Applies base button classes consistently (btn, flex, items-center)
+- ✅ Renders unfilled heart icon when movie is not a favorite (fill="none")
+- ✅ Renders filled heart icon when movie is a favorite (fill="currentColor")
+- ✅ Maintains proper heart icon styling (w-5, h-5, mr-2)
+- ✅ Calls addFavorite when clicking on non-favorite movie
+- ✅ Calls removeFavorite when clicking on favorite movie
+- ✅ Handles multiple clicks correctly without duplicate actions
+- ✅ Integrates properly with useFavorites hook from context
+- ✅ Calls isFavorite with correct movie id for state checking
+- ✅ Works with different movie ids correctly
+- ✅ Handles edge cases: movie with id 0, negative ids, very large ids
+- ✅ Reflects favorite state changes correctly when rerendered
+- ✅ Updates button appearance when favorite status changes
+- ✅ Has proper button role for accessibility
+- ✅ Has descriptive text for screen readers (Add/Remove from Favorites)
+- ✅ Button text changes appropriately for different states
+- ✅ Properly mocks FavoritesContext for isolated testing
+- ✅ Properly mocks lucide-react Heart icon component
+- ✅ Uses appropriate test data with complete Movie interface
+- ✅ Prevents context bleeding between test cases with beforeEach cleanup
+- ✅ Tests both favorite and non-favorite states comprehensively
 
 ### Button Component (`src/components/core/Button.tsx`)
 
