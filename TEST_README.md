@@ -877,6 +877,21 @@ These components have comprehensive test coverage including:
 - **Visual States**: Hover effects, CSS classes, responsive layout
 - **International Content**: Special characters, unicode, long names
 
+### SearchResults Component
+
+The SearchResults component has comprehensive test coverage including:
+
+- **Loading State**: Initial loading state with spinner and search query display
+- **Error Handling**: API error display with retry functionality
+- **Empty Results**: Proper display of "No movies found" message with search query
+- **Successful Results**: Correct display of search results with movie count and pagination
+- **API Integration**: Proper fetch calls with query parameters and page number
+- **Edge Cases**: Empty query handling, network errors, malformed responses
+- **State Management**: Loading, error, and results state transitions
+- **Pagination**: Display of page information when multiple pages exist
+- **Accessibility**: Proper semantic structure and error message accessibility
+- **User Experience**: Clear loading indicators and error messages
+
 ## Troubleshooting
 
 ### Common Issues
