@@ -20,7 +20,8 @@ src/__tests__/
 │   └── not-found.test.tsx          # Tests for NotFound component
 ├── components/
 │   ├── core/
-│   │   └── GoBackButton.test.tsx   # Tests for GoBackButton component
+│   │   ├── Carousel.test.tsx       # Tests for Carousel component
+│   │   ├── GoBackButton.test.tsx   # Tests for GoBackButton component
 │   │   └── SearchSuggestions.test.tsx  # Tests for SearchSuggestions component
 │   ├── layout/
 │   │   ├── Navbar.test.tsx         # Tests for Navbar component
@@ -125,8 +126,14 @@ npm test -- --testPathPattern="Footer"
 # Run SearchBar tests only
 npm test -- --testPathPattern="SearchBar"
 
+# Run Carousel tests only
+npm test -- --testPathPattern="Carousel"
+
 # Run GoBackButton tests only
 npm test -- --testPathPattern="GoBackButton"
+
+# Run SearchSuggestions tests only
+npm test -- --testPathPattern="SearchSuggestions"
 
 # Run UI component tests
 npm test -- --testPathPattern="ui/"
@@ -198,6 +205,29 @@ The tests currently cover:
 - ✅ Maintains proper component structure and DOM hierarchy
 - ✅ Renders without any text content (purely visual)
 - ✅ Can be rendered multiple times without conflicts
+
+### Carousel Component (`src/components/core/Carousel.tsx`)
+
+- ✅ Renders carousel container with correct semantic structure and ARIA attributes
+- ✅ Renders carousel content with proper overflow handling and embla-carousel integration
+- ✅ Renders carousel items with correct roles and aria-roledescriptions for accessibility
+- ✅ Renders navigation buttons (previous/next) with proper icons and screen reader text
+- ✅ Applies correct CSS classes for horizontal and vertical orientations
+- ✅ Handles navigation functionality with embla-carousel API integration
+- ✅ Implements proper keyboard navigation with ArrowLeft and ArrowRight keys
+- ✅ Prevents default behavior for keyboard navigation to avoid page scrolling
+- ✅ Disables navigation buttons appropriately based on scroll capabilities
+- ✅ Calls external API setters when carousel API is available
+- ✅ Sets up and cleans up event listeners properly to prevent memory leaks
+- ✅ Supports custom CSS classes for all carousel components
+- ✅ Accepts custom variant and size props for navigation buttons
+- ✅ Handles edge cases: empty content, single items, multiple items
+- ✅ Maintains component isolation when multiple carousels are rendered
+- ✅ Supports both horizontal and vertical orientations with appropriate styling
+- ✅ Implements proper accessibility standards with ARIA roles and descriptions
+- ✅ Uses embla-carousel-react for smooth carousel functionality
+- ✅ Integrates with custom Button component and Lucide React icons
+- ✅ Follows React best practices with proper forwarded refs and TypeScript support
 - ✅ Has no interactive elements (buttons, links, inputs)
 - ✅ Uses appropriate CSS classes for responsive design
 - ✅ Provides proper loading state indication
