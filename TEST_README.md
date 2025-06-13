@@ -21,6 +21,7 @@ src/__tests__/
 ├── components/
 │   ├── core/
 │   │   └── GoBackButton.test.tsx   # Tests for GoBackButton component
+│   │   └── SearchSuggestions.test.tsx  # Tests for SearchSuggestions component
 │   ├── layout/
 │   │   ├── Navbar.test.tsx         # Tests for Navbar component
 │   │   └── Footer.test.tsx         # Tests for Footer component
@@ -877,20 +878,41 @@ These components have comprehensive test coverage including:
 - **Visual States**: Hover effects, CSS classes, responsive layout
 - **International Content**: Special characters, unicode, long names
 
-### SearchResults Component
+### SearchSuggestions Component (`src/components/core/SearchSuggestions.tsx`)
 
-The SearchResults component has comprehensive test coverage including:
+- ✅ Renders search suggestions with proper visibility control
+- ✅ Loads and displays recent searches from localStorage
+- ✅ Saves searches to recent searches when clicked
+- ✅ Clears recent searches with clear button functionality
+- ✅ Fetches and displays movie suggestions from API
+- ✅ Shows loading state during API calls
+- ✅ Handles API errors gracefully
+- ✅ Filters popular searches based on query
+- ✅ Shows appropriate messages for no results
+- ✅ Implements debouncing for API calls
+- ✅ Maintains accessibility with proper ARIA attributes
+- ✅ Handles special characters and unicode in queries
+- ✅ Limits recent searches to 5 items
+- ✅ Provides proper semantic structure and keyboard navigation
+- ✅ Handles edge cases (empty queries, API failures)
+- ✅ Tests component isolation with strategic mocking
+- ✅ Validates localStorage integration
+- ✅ Tests debounce functionality with timers
+- ✅ Ensures proper error message display
+- ✅ Validates search suggestion click handling
 
-- **Loading State**: Initial loading state with spinner and search query display
-- **Error Handling**: API error display with retry functionality
-- **Empty Results**: Proper display of "No movies found" message with search query
-- **Successful Results**: Correct display of search results with movie count and pagination
-- **API Integration**: Proper fetch calls with query parameters and page number
-- **Edge Cases**: Empty query handling, network errors, malformed responses
-- **State Management**: Loading, error, and results state transitions
-- **Pagination**: Display of page information when multiple pages exist
-- **Accessibility**: Proper semantic structure and error message accessibility
-- **User Experience**: Clear loading indicators and error messages
+#### Key Testing Features
+
+- **Local Storage Integration**: Tests localStorage getItem, setItem, and removeItem
+- **API Integration**: Mocks fetch for movie suggestions with proper error handling
+- **Debounce Testing**: Uses jest.useFakeTimers for testing debounced API calls
+- **Accessibility**: Validates ARIA attributes and semantic structure
+- **Edge Cases**: Tests special characters, unicode, and error scenarios
+- **State Management**: Tests recent searches limit and persistence
+- **User Interactions**: Tests click handlers and clear functionality
+- **Loading States**: Validates loading indicators during API calls
+- **Error Handling**: Tests API errors and empty states
+- **Component Visibility**: Tests conditional rendering based on props
 
 ## Troubleshooting
 
