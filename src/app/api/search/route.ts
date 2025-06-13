@@ -16,7 +16,6 @@ export async function GET(request: NextRequest) {
 	const baseUrl = process.env.TMDB_BASE_URL || "https://api.themoviedb.org/3";
 
 	if (!apiKey) {
-		console.error("API Route: TMDB_API_KEY environment variable is not set");
 		return NextResponse.json(
 			{ error: "API configuration error" },
 			{ status: 500 }
@@ -24,19 +23,11 @@ export async function GET(request: NextRequest) {
 	}
 
 	try {
-		console.log("API Route: Searching for:", query, "page:", page);
-
 		const apiUrl = `${baseUrl}/search/movie?api_key=${apiKey}&query=${encodeURIComponent(
 			query
 		)}&page=${page}`;
-		console.log("API Route: Fetching URL:", apiUrl.replace(apiKey, "***"));
 
 		const response = await fetch(apiUrl);
-		console.log(
-			"API Route: Response status:",
-			response.status,
-			response.statusText
-		);
 
 		if (!response.ok) {
 			throw new Error(
@@ -45,7 +36,6 @@ export async function GET(request: NextRequest) {
 		}
 
 		const data = await response.json();
-		console.log("API Route: Raw API response:", data);
 
 		const imageBaseUrl =
 			process.env.TMDB_IMAGE_BASE_URL || "https://image.tmdb.org/t/p";
@@ -78,14 +68,8 @@ export async function GET(request: NextRequest) {
 			results: processedMovies,
 		};
 
-		console.log(
-			"API Route: Successfully processed",
-			processedMovies.length,
-			"movies"
-		);
 		return NextResponse.json(searchResult);
 	} catch (error) {
-		console.error("API Route: Error during fetch:", error);
 		const errorMessage =
 			error instanceof Error ? error.message : "Failed to search movies";
 		return NextResponse.json({ error: errorMessage }, { status: 500 });
