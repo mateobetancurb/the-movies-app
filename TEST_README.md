@@ -15,6 +15,8 @@ src/__tests__/
 │   │   ├── page.test.tsx           # Tests for CategoriesPage component
 │   │   └── [id]/
 │   │       └── page.test.tsx       # Tests for CategoryPage component
+│   ├── favorites/
+│   │   └── page.test.tsx           # Tests for Favorites page component
 │   ├── movies/
 │   │   └── [id]/
 │   │       └── page.test.tsx       # Tests for MoviePage component
@@ -178,6 +180,9 @@ npm test -- --testPathPattern="categories/\\[id\\]/page"
 # Run all categories page tests
 npm test -- --testPathPattern="categories/"
 
+# Run Favorites page tests only
+npm test -- --testPathPattern="favorites/page"
+
 # Run CategoryCard tests only
 npm test -- --testPathPattern="CategoryCard"
 
@@ -199,6 +204,46 @@ npm test -- --testPathPattern="movies/\\[id\\]/page"
 # Run all movie page tests
 npm test -- --testPathPattern="movies/"
 ```
+
+## Test Coverage
+
+### Favorites Page Tests
+
+The favorites page tests (`src/__tests__/app/favorites/page.test.tsx`) cover the current simple implementation:
+
+#### Test Categories:
+
+1. **Current Implementation**
+
+   - Renders the favorites page with current simple implementation
+   - Verifies it renders as a paragraph element
+   - Tests the correct component structure
+
+2. **Component Properties**
+
+   - Verifies it's a functional component
+   - Tests that it renders without crashing
+   - Ensures consistent rendering behavior
+
+3. **Accessibility**
+   - Tests accessible text content
+   - Verifies proper DOM structure
+
+#### Key Testing Approach:
+
+- Tests are adapted to the current implementation (simple paragraph with "Favorites" text)
+- No changes were made to the component code
+- Mocks the FavoritesContext to avoid dependency issues
+- Follows the existing project's test patterns and structure
+
+#### Future Considerations:
+
+- When the favorites page is fully implemented, these tests should be updated to cover:
+  - Favorite movies display
+  - Empty state handling
+  - User interactions (add/remove favorites)
+  - Error states
+  - Loading states
 
 ### Run Tests with Coverage
 
