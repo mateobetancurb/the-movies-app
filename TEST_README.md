@@ -20,6 +20,9 @@ src/__tests__/
 │   ├── not-found.test.tsx          # Tests for NotFound component
 │   └── page.test.tsx               # Tests for Home page component
 ├── components/
+│   ├── categories/
+│   │   ├── GenresList.test.tsx     # Tests for GenresList component
+│   │   └── MainContent.test.tsx    # Tests for MainContent component
 │   ├── core/
 │   │   ├── AddToFavoritesBtn.test.tsx  # Tests for AddToFavoritesBtn component
 │   │   ├── Button.test.tsx         # Tests for Button component
@@ -171,8 +174,14 @@ npm test -- --testPathPattern="categories/\\[id\\]/page"
 # Run all categories page tests
 npm test -- --testPathPattern="categories/"
 
+# Run GenresList tests only
+npm test -- --testPathPattern="GenresList"
+
 # Run MainContent tests only
 npm test -- --testPathPattern="MainContent"
+
+# Run all categories component tests
+npm test -- --testPathPattern="categories/"
 
 # Run Home page tests only
 npm test -- --testPathPattern="app/page"
@@ -197,6 +206,75 @@ The tests currently cover:
 ### Home Page (page.tsx) Tests
 
 The home page tests comprehensively cover the main application entry point, testing both the default homepage behavior and search functionality. These tests follow the testing practices of adapting to the current code implementation without modifying it.
+
+### GenresList Component Tests
+
+The GenresList component tests provide comprehensive coverage for the genre selection functionality used throughout the application. These tests ensure proper rendering, user interactions, navigation, and accessibility features work correctly.
+
+#### Test Coverage Areas:
+
+**Rendering Tests:**
+
+- Component renders without crashing with valid genres array
+- All provided genres are rendered as clickable buttons
+- Optional title prop is rendered when provided and hidden when not provided
+- Correct CSS classes are applied to all elements (section, title, grid container, buttons, and icons)
+- ArrowRight icons are rendered for each genre button with proper styling
+
+**User Interaction Tests:**
+
+- Genre button clicks trigger correct navigation using Next.js router
+- Multiple different genre selections work correctly
+- Multiple clicks on the same genre are handled properly
+- Both user-event and fireEvent interactions are tested
+- Keyboard navigation support is verified
+- Focus and blur events are handled correctly
+
+**Edge Cases:**
+
+- Empty genres array renders without errors
+- Single genre displays correctly
+- Very long genre names are handled properly
+- Special characters in genre names (e.g., "&", "/", "-") work correctly
+- Numeric characters in genre names are supported
+- Very large genre IDs (up to 999999) are handled properly
+
+**Accessibility Tests:**
+
+- Proper ARIA roles are applied (section has "group" role, buttons have "button" role)
+- Button text is accessible and matches genre names
+- Keyboard navigation is fully supported with proper tabIndex
+- Heading hierarchy is correct when title is provided
+
+**Component Structure Tests:**
+
+- DOM structure integrity is maintained
+- Buttons render in the correct order matching the genres array
+- ArrowRight icons are included in each button
+- Proper HTML semantic elements are used (section, h2, button)
+
+**Props Validation Tests:**
+
+- Different title prop types (string, undefined, empty string) are handled correctly
+- Various genre array structures work properly including edge cases like zero or negative IDs
+
+#### Mock Setup:
+
+The tests use comprehensive mocking to isolate the component:
+
+- **Next.js Navigation**: Mocks `useRouter` hook to capture navigation calls
+- **Lucide React Icons**: Mocks ArrowRight icon with a testable SVG element
+- **Navigation Tracking**: Verifies correct `/categories?genre={id}` URLs are generated
+
+#### Testing Patterns:
+
+Following the project's testing practices:
+
+- Uses React Testing Library for DOM queries and user interactions
+- Implements both `@testing-library/user-event` and `fireEvent` for comprehensive interaction testing
+- Groups tests by functionality for better organization
+- Uses descriptive test names that clearly indicate what behavior is being verified
+- Includes proper cleanup with `beforeEach` hooks to ensure test isolation
 
 **Test Categories:**
 
