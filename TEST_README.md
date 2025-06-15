@@ -15,6 +15,9 @@ src/__tests__/
 │   │   ├── page.test.tsx           # Tests for CategoriesPage component
 │   │   └── [id]/
 │   │       └── page.test.tsx       # Tests for CategoryPage component
+│   ├── movies/
+│   │   └── [id]/
+│   │       └── page.test.tsx       # Tests for MoviePage component
 │   ├── layout.test.tsx             # Tests for RootLayout component
 │   ├── loading.test.tsx            # Tests for Loading component
 │   ├── not-found.test.tsx          # Tests for NotFound component
@@ -189,6 +192,12 @@ npm test -- --testPathPattern="categories/"
 
 # Run Home page tests only
 npm test -- --testPathPattern="app/page"
+
+# Run MoviePage tests only
+npm test -- --testPathPattern="movies/\\[id\\]/page"
+
+# Run all movie page tests
+npm test -- --testPathPattern="movies/"
 ```
 
 ### Run Tests with Coverage
@@ -1352,14 +1361,15 @@ process.env.TMDB_API_KEY = "test-api-key";
 
 ## Test Summary
 
-The Movies App now has comprehensive test coverage with **499 total tests passing**:
+The Movies App now has comprehensive test coverage with **519 total tests passing**:
 
-- **App-Level Tests**: 77 tests covering core Next.js app structure
+- **App-Level Tests**: 97 tests covering core Next.js app structure
   - **RootLayout**: 10 tests for layout structure, metadata, and children handling
   - **Loading**: 15 tests for loading spinner, accessibility, and styling
   - **NotFound**: 19 tests for 404 page, navigation, and user experience
   - **CategoriesPage**: 13 tests for main categories page with genres display
   - **CategoryPage**: 20 tests for individual category page with movies by genre
+  - **MoviePage**: 20 tests for individual movie details page with comprehensive coverage
 - **Component Tests**: 370 tests covering all React components
   - **Categories Components**: 66 tests for CategoryCard (40 tests) and MainContent (26 tests) components (state management, search functionality, conditional rendering, animation integration)
   - **Core Components**: 23 tests for GoBackButton navigation component
@@ -1371,9 +1381,61 @@ The Movies App now has comprehensive test coverage with **499 total tests passin
 - **Context Tests**: 15 tests for FavoritesContext
 - **Helper Tests**: 2 tests for utility functions
 
+### ✅ MoviePage Component (`src/app/movies/[id]/page.tsx`)
+
+The MoviePage component has comprehensive test coverage with **20 tests passing**:
+
+- **Successful Movie Details Display** (3 tests)
+
+  - ✅ Renders movie details page with all components when movie exists
+  - ✅ Handles movie details with empty cast array
+  - ✅ Correctly parses movie ID from params
+
+- **Movie Not Found Scenario** (2 tests)
+
+  - ✅ Renders 'Movie not found' message when movie does not exist
+  - ✅ Handles movieService throwing an error
+
+- **Edge Cases** (3 tests)
+
+  - ✅ Handles string movie ID conversion correctly
+  - ✅ Handles very large movie ID
+  - ✅ Renders correctly with minimal movie data
+
+#### Key Testing Features
+
+- **Server Component Testing**: Tests Next.js 15 app router page component with async params
+- **Movie Service Integration**: Mocks getMovieDetails service with comprehensive test scenarios
+- **Component Mocking**: Strategic mocking of MovieHero, MovieCast, and SimilarMoviesYouMightLike components
+- **Error Handling**: Tests both API errors and null movie responses
+- **Parameter Parsing**: Tests conversion of string IDs to numbers from route parameters
+- **Conditional Rendering**: Tests different UI states based on movie data availability
+- **CSS Class Validation**: Comprehensive testing of Tailwind CSS classes and styling
+- **Navigation Testing**: Tests "Back to Home" link functionality with Next.js Link component
+- **Props Validation**: Tests correct prop passing to child components
+- **Edge Case Coverage**: Tests boundary conditions, minimal data, and error scenarios
+
+#### Component Integration Testing
+
+- **MovieHero Integration**: Validates movie details are passed correctly to hero component
+- **MovieCast Integration**: Tests cast data rendering and empty cast handling
+- **SimilarMoviesYouMightLike Integration**: Tests movie ID passing for similar movies
+- **Container Structure**: Tests proper CSS class application for page layout
+- **Error State Rendering**: Tests complete error UI with styled message and navigation link
+
+#### Testing Practices Applied
+
+- **No Code Changes**: Tests adapt to existing MoviePage implementation without modifications
+- **Comprehensive Coverage**: Tests cover all component branches including error states
+- **Async Testing**: Proper handling of async server component with Promise-based params
+- **Mock Strategy**: Strategic mocking of dependencies while preserving component logic
+- **Type Safety**: Uses proper TypeScript interfaces (MovieDetails) for test data
+- **Error Boundary Testing**: Tests error handling and graceful degradation
+- **Next.js Integration**: Tests Next.js Link component integration and routing
+
 ### Coverage Highlights
 
-- **App-Level Components**: 100% statement, branch, function, and line coverage for RootLayout, Loading, NotFound, CategoriesPage, and CategoryPage
+- **App-Level Components**: 100% statement, branch, function, and line coverage for RootLayout, Loading, NotFound, CategoriesPage, CategoryPage, and MoviePage
 - **Core Components**: 100% statement, branch, function, and line coverage for GoBackButton
 - **Layout Components**: 100% statement, branch, function, and line coverage for Navbar and Footer
 - **UI Components**: 100% statement, branch, function, and line coverage for SearchBar
