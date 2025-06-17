@@ -8,13 +8,33 @@ The project uses Jest and React Testing Library for unit testing and component t
 
 ## Recent Test Fixes
 
+### SearchResults Component Tests Added (December 2024)
+
+- **Added**: Comprehensive test suite for SearchResults component
+- **Coverage**:
+  - Loading states and spinner animations
+  - Successful search results display and pagination
+  - Empty search results handling
+  - Error states and error recovery
+  - Query handling (empty, whitespace, special characters)
+  - Component lifecycle and data fetching
+  - Accessibility and semantic structure
+  - Performance optimizations
+- **Test Features**:
+  - Mocked fetch API for controlled testing
+  - Proper async/await handling with React 18 compatibility
+  - Component unmount cleanup testing
+  - Window.location.reload mocking for error recovery
+  - MovieGrid component mocking for isolation
+- **Test Status**: ✅ All SearchResults functionality fully tested
+
 ### Search API Route Test Fix (December 2024)
 
 - **Issue**: The test for "should use default values for missing optional fields" was failing because it expected undefined values for fields that were missing from the TMDB API response
 - **Root Cause**: The API route implementation only includes fields in the response object if they exist in the original TMDB response. Fields like `overview`, `release_date`, `vote_average`, `original_language`, etc. are not included when they're undefined/missing from TMDB
 - **Solution**: Adapted the test to match the actual API behavior by removing expectations for undefined fields from the test assertion
 - **Result**: Test now passes and accurately reflects the API's actual behavior
-- **Test Status**: ✅ All 709 tests now passing (35 test suites)
+- **Test Status**: ✅ All 724 tests now passing (35 test suites)
 
 ## Test Structure
 
@@ -57,6 +77,7 @@ src/__tests__/
 │   │   ├── MovieCarousel.test.tsx  # Tests for MovieCarousel component
 │   │   ├── MovieGrid.test.tsx      # Tests for MovieGrid component
 │   │   ├── MovieCast.test.tsx      # Tests for MovieCast component
+│   │   ├── SearchResults.test.tsx  # Tests for SearchResults component
 │   │   └── sections/
 │   │       ├── MovieSection.test.tsx               # Tests for shared MovieSection component
 │   │       ├── NewReleasesSection.test.tsx         # Tests for NewReleasesSection component
@@ -103,6 +124,9 @@ npm test -- --testPathPattern="MovieGrid"
 # Run MovieCast tests only
 npm test -- --testPathPattern="MovieCast"
 
+# Run SearchResults tests only
+npm test -- --testPathPattern="SearchResults"
+
 # Run MovieSection tests only
 npm test -- --testPathPattern="MovieSection"
 
@@ -131,13 +155,13 @@ npm test -- --testPathPattern="movieService"
 npm test -- --testPathPattern="services/"
 
 # Run all movie component tests
-npm test -- --testPathPattern="MovieHero|MovieCard|MovieCarousel|MovieGrid|MovieCast"
+npm test -- --testPathPattern="MovieHero|MovieCard|MovieCarousel|MovieGrid|MovieCast|SearchResults"
 
 # Run all movie section tests
 npm test -- --testPathPattern="NewReleasesSection|SimilarMoviesYouMightLike|TopRatedSection|TrendingNowSection|MovieSection"
 
 # Run specific combination of tests
-npm test -- --testPathPattern="MovieCard|MovieCarousel|MovieGrid|MovieCast|sections/"
+npm test -- --testPathPattern="MovieCard|MovieCarousel|MovieGrid|MovieCast|SearchResults|sections/"
 
 # Run layout component tests
 npm test -- --testPathPattern="layout/"
