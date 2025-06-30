@@ -1,6 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import RootLayout, { metadata } from "../../app/layout";
 
+// Mock @vercel/analytics/next
+jest.mock("@vercel/analytics/next", () => ({
+	Analytics: jest.fn(() => null),
+}));
+
 // Mock next/font/google
 jest.mock("next/font/google", () => ({
 	Geist: jest.fn(() => ({

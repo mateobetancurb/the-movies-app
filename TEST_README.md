@@ -6,6 +6,36 @@ This document provides comprehensive information about the testing practices, se
 
 ### Fixed Failing Tests (December 2024)
 
+#### Layout Tests (`src/__tests__/app/layout.test.tsx`) - ES Module Import Issue
+
+**Issue**: Test was failing with SyntaxError when trying to parse `@vercel/analytics/next` module because Jest couldn't handle ES module syntax.
+
+**Error**:
+
+```
+SyntaxError: Cannot use import statement outside a module
+```
+
+**Solution**: Added proper mocking for the Vercel Analytics module to prevent Jest parsing issues:
+
+```typescript
+// Mock @vercel/analytics/next
+jest.mock("@vercel/analytics/next", () => ({
+	Analytics: jest.fn(() => null),
+}));
+```
+
+**Key Changes**:
+
+- ✅ Added Analytics component mock to prevent ES module parsing errors
+- ✅ Test now properly imports and tests the layout.tsx file
+- ✅ All layout functionality tests continue to pass (10 tests)
+- ✅ Maintained existing test coverage for metadata and component structure
+
+**Root Cause**: The `@vercel/analytics/next` package uses ES module format that Jest couldn't parse without proper configuration or mocking.
+
+**Test Results**: Layout test suite now passes with all 10 tests successful.
+
 #### Favorites Page Tests (`src/__tests__/app/favorites/page.test.tsx`)
 
 **Issue**: Tests were expecting a simple `<p>Favorites</p>` component but the actual implementation renders a full page layout.
