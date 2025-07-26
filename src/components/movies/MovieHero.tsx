@@ -1,8 +1,8 @@
 import { Play, Star, Clock } from "lucide-react";
-import Image from "next/image";
 import React from "react";
 import { Movie } from "@/src/interfaces";
 import AddToFavoritesBtn from "@/src/components/core/AddToFavoritesBtn";
+import ImageWithFallback from "@/src/components/core/ImageWithFallback";
 
 interface MovieHeroProps {
 	movie: Movie;
@@ -12,23 +12,22 @@ const MovieHero: React.FC<MovieHeroProps> = ({ movie }) => {
 	return (
 		<div className="relative">
 			<div className="absolute inset-0 h-[70vh]">
-				{movie?.backdrop_path ? (
-					<Image
-						src={movie?.backdrop_path}
-						alt={`${movie?.title} backdrop`}
-						className="w-full h-full object-cover"
-						width={1000}
-						height={1000}
-						priority
-					/>
-				) : (
-					<div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-						<div className="text-center text-gray-400">
-							<h2 className="text-2xl font-bold mb-2">{movie?.title}</h2>
-							<p className="text-sm">No backdrop available</p>
+				<ImageWithFallback
+					src={movie?.backdrop_path || ""}
+					alt={`${movie?.title} backdrop`}
+					className="w-full h-full object-cover"
+					width={1000}
+					height={1000}
+					priority
+					fallback={
+						<div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+							<div className="text-center text-gray-400">
+								<h2 className="text-2xl font-bold mb-2">{movie?.title}</h2>
+								<p className="text-sm">No backdrop available</p>
+							</div>
 						</div>
-					</div>
-				)}
+					}
+				/>
 				<div className="absolute inset-0 bg-gradient-to-t from-gray-950 to-gray-950/40"></div>
 			</div>
 

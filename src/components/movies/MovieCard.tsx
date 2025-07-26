@@ -7,6 +7,7 @@ import { Star } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 import { Movie } from "@/src/interfaces";
 import { motion } from "framer-motion";
+import ImageWithFallback from "../core/ImageWithFallback";
 
 interface MovieCardProps {
 	movie: Movie;
@@ -37,24 +38,22 @@ const MovieCard: React.FC<MovieCardProps> = ({
 				data-testid={dataTestId}
 			>
 				{/* movie poster */}
-				<div className="relative aspect-[2/3] overflow-hidden w-full sm:w-[300px]">
-					{movie?.poster_path ? (
-						<Image
-							src={movie?.poster_path}
-							alt={`${movie?.title} poster`}
-							className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
-							width={500}
-							height={750}
-						/>
-					) : (
-						<div className="w-full h-full bg-gray-800 flex items-center justify-center">
-							<div className="text-center text-gray-400">
-								<div className="text-4xl mb-2">🎬</div>
-								<div className="text-sm px-4">No Image Available</div>
+				<div className="relative aspect-[2/3] overflow-hidden w-full rounded-md">
+					<ImageWithFallback
+						src={movie?.poster_path || ""}
+						alt={`${movie?.title} poster`}
+						fill
+						sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+						className="object-cover transform group-hover:scale-105 transition-transform duration-300"
+						fallback={
+							<div className="w-full h-full bg-gray-800 flex items-center justify-center">
+								<div className="text-center text-gray-400">
+									<div className="text-4xl mb-2">🎬</div>
+									<div className="text-sm px-4">No Image Available</div>
+								</div>
 							</div>
-						</div>
-					)}
-					<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity"></div>
+						}
+					/>
 
 					{/* rating */}
 					<div className="absolute top-2 left-2 flex items-center bg-black/60 rounded-full px-2 py-1 text-sm">
