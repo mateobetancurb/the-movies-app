@@ -11,7 +11,7 @@ const CastMember = ({ person }: CastMemberProps) => {
 		<div className="text-center">
 			<div className="w-full aspect-square bg-gray-800 rounded-full flex items-center justify-center mb-2">
 				<ImageWithFallback
-					src={person?.profile_path}
+					src={person?.profile_path || ""}
 					alt={person?.name}
 					width={100}
 					height={100}
