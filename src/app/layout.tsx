@@ -20,6 +20,9 @@ export const metadata: Metadata = {
 	title: "The movies app",
 	description:
 		"An app to search, watch trailers, and save your favorite movies",
+	icons: {
+		icon: "/favicon.svg",
+	},
 };
 
 export default function RootLayout({
