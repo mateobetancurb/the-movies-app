@@ -14,7 +14,9 @@ const AddToFavoritesBtn: React.FC<AddToFavoritesBtnProps> = ({ movie }) => {
 
 	return (
 		<button
-			className={`btn flex items-center ${isMovieFavorited ? "btn-favorited text-red-600" : "btn-not-favorited"}`}
+			className={`btn flex items-center ${
+				isMovieFavorited ? " text-red-700 bg-red-50" : "bg-gray-500"
+			}`}
 			onClick={() => toggleFavorite(movie)}
 			aria-label={
 				isMovieFavorited ? "Remove from favorites" : "Add to favorites"
