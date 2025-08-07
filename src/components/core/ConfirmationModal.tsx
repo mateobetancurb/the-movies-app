@@ -117,6 +117,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 						variant="outline"
 						onClick={onClose}
 						className="flex-1 border-gray-600 text-gray-700 hover:bg-gray-800 hover:text-white transition-all duration-200"
+						aria-label={cancelText}
 					>
 						{cancelText}
 					</Button>
@@ -127,6 +128,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 							onClose();
 						}}
 						className="flex-1 transition-all duration-200"
+						aria-label={confirmText}
 					>
 						{confirmText}
 					</Button>
