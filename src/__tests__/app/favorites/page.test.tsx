@@ -59,13 +59,11 @@ describe("Favorites Page", () => {
 			// Test the current implementation with complete layout
 			expect(screen.getByText("Your Favorites")).toBeInTheDocument();
 			expect(
-				screen.getByText("⚠️ This section is under development...")
-			).toBeInTheDocument();
-			expect(
 				screen.getByText(
 					"Your personally curated collection of favorite movies."
 				)
 			).toBeInTheDocument();
+			expect(screen.getByText("No Favorites Yet")).toBeInTheDocument();
 		});
 
 		it("renders the main heading as h1 element", () => {
@@ -97,20 +95,12 @@ describe("Favorites Page", () => {
 			expect(screen.getByText("Browse Movies")).toBeInTheDocument();
 		});
 
-		it("shows development warning", () => {
+		it("shows empty state message", () => {
 			render(<Favorites />);
 
-			const warningElement = screen.getByText(
-				"⚠️ This section is under development..."
-			);
-			expect(warningElement.tagName).toBe("H2");
-			expect(warningElement).toHaveClass(
-				"bg-yellow-100",
-				"w-fit",
-				"text-black",
-				"rounded-md",
-				"p-2"
-			);
+			const emptyStateMessage = screen.getByText("No Favorites Yet");
+			expect(emptyStateMessage.tagName).toBe("H2");
+			expect(emptyStateMessage).toHaveClass("text-2xl", "font-bold", "mb-2");
 		});
 	});
 
@@ -148,7 +138,7 @@ describe("Favorites Page", () => {
 			// Should have structured content with headings and descriptions
 			expect(container.querySelector("h1")).toHaveTextContent("Your Favorites");
 			expect(container.querySelector("h2")).toHaveTextContent(
-				"⚠️ This section is under development..."
+				"No Favorites Yet"
 			);
 		});
 
