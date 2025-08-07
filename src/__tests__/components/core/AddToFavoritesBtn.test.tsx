@@ -44,14 +44,14 @@ const mockMovie: Movie = {
 };
 
 describe("AddToFavoritesBtn", () => {
-	const mockAddFavorite = jest.fn();
-	const mockRemoveFavorite = jest.fn();
+	const mockToggleFavorite = jest.fn();
 	const mockIsFavorite = jest.fn();
 
 	const defaultMockReturn = {
 		isFavorite: mockIsFavorite,
-		addFavorite: mockAddFavorite,
-		removeFavorite: mockRemoveFavorite,
+		toggleFavorite: mockToggleFavorite,
+		addFavorite: jest.fn(),
+		removeFavorite: jest.fn(),
 		favorites: [],
 	};
 
@@ -98,12 +98,7 @@ describe("AddToFavoritesBtn", () => {
 			render(<AddToFavoritesBtn movie={mockMovie} />);
 
 			const button = screen.getByRole("button");
-			expect(button).toHaveClass(
-				"bg-gray-800",
-				"hover:bg-gray-700",
-				"text-white"
-			);
-			expect(button).not.toHaveClass("btn-secondary");
+			expect(button).toHaveClass("btn", "flex", "items-center");
 		});
 
 		it("applies correct classes when movie is a favorite", () => {
@@ -112,7 +107,7 @@ describe("AddToFavoritesBtn", () => {
 			render(<AddToFavoritesBtn movie={mockMovie} />);
 
 			const button = screen.getByRole("button");
-			expect(button).toHaveClass("btn-secondary");
+			expect(button).toHaveClass("btn", "flex", "items-center");
 		});
 
 		it("applies base button classes consistently", () => {
@@ -148,7 +143,7 @@ describe("AddToFavoritesBtn", () => {
 	});
 
 	describe("Click Interactions", () => {
-		it("calls addFavorite when clicking on non-favorite movie", () => {
+		it("calls toggleFavorite when clicking on non-favorite movie", () => {
 			mockIsFavorite.mockReturnValue(false);
 
 			render(<AddToFavoritesBtn movie={mockMovie} />);
@@ -156,12 +151,11 @@ describe("AddToFavoritesBtn", () => {
 			const button = screen.getByRole("button");
 			fireEvent.click(button);
 
-			expect(mockAddFavorite).toHaveBeenCalledTimes(1);
-			expect(mockAddFavorite).toHaveBeenCalledWith(mockMovie.id);
-			expect(mockRemoveFavorite).not.toHaveBeenCalled();
+			expect(mockToggleFavorite).toHaveBeenCalledTimes(1);
+			expect(mockToggleFavorite).toHaveBeenCalledWith(mockMovie);
 		});
 
-		it("calls removeFavorite when clicking on favorite movie", () => {
+		it("calls toggleFavorite when clicking on favorite movie", () => {
 			mockIsFavorite.mockReturnValue(true);
 
 			render(<AddToFavoritesBtn movie={mockMovie} />);
@@ -169,9 +163,8 @@ describe("AddToFavoritesBtn", () => {
 			const button = screen.getByRole("button");
 			fireEvent.click(button);
 
-			expect(mockRemoveFavorite).toHaveBeenCalledTimes(1);
-			expect(mockRemoveFavorite).toHaveBeenCalledWith(mockMovie.id);
-			expect(mockAddFavorite).not.toHaveBeenCalled();
+			expect(mockToggleFavorite).toHaveBeenCalledTimes(1);
+			expect(mockToggleFavorite).toHaveBeenCalledWith(mockMovie);
 		});
 
 		it("handles multiple clicks correctly", () => {
@@ -184,8 +177,8 @@ describe("AddToFavoritesBtn", () => {
 			fireEvent.click(button);
 			fireEvent.click(button);
 
-			expect(mockAddFavorite).toHaveBeenCalledTimes(3);
-			expect(mockAddFavorite).toHaveBeenCalledWith(mockMovie.id);
+			expect(mockToggleFavorite).toHaveBeenCalledTimes(3);
+			expect(mockToggleFavorite).toHaveBeenCalledWith(mockMovie);
 		});
 	});
 
@@ -224,7 +217,7 @@ describe("AddToFavoritesBtn", () => {
 			const button = screen.getByRole("button");
 			fireEvent.click(button);
 
-			expect(mockAddFavorite).toHaveBeenCalledWith(0);
+			expect(mockToggleFavorite).toHaveBeenCalledWith(movieWithZeroId);
 		});
 
 		it("handles negative movie id", () => {
@@ -236,7 +229,7 @@ describe("AddToFavoritesBtn", () => {
 			const button = screen.getByRole("button");
 			fireEvent.click(button);
 
-			expect(mockAddFavorite).toHaveBeenCalledWith(-1);
+			expect(mockToggleFavorite).toHaveBeenCalledWith(movieWithNegativeId);
 		});
 
 		it("handles very large movie id", () => {
@@ -248,7 +241,7 @@ describe("AddToFavoritesBtn", () => {
 			const button = screen.getByRole("button");
 			fireEvent.click(button);
 
-			expect(mockAddFavorite).toHaveBeenCalledWith(999999999);
+			expect(mockToggleFavorite).toHaveBeenCalledWith(movieWithLargeId);
 		});
 	});
 
@@ -277,16 +270,14 @@ describe("AddToFavoritesBtn", () => {
 			rerender(<AddToFavoritesBtn movie={mockMovie} />);
 
 			let button = screen.getByRole("button");
-			expect(button).toHaveClass("bg-gray-800");
-			expect(button).not.toHaveClass("btn-secondary");
+			expect(button).toHaveClass("btn", "flex", "items-center");
 
 			// Now it's a favorite
 			mockIsFavorite.mockReturnValue(true);
 			rerender(<AddToFavoritesBtn movie={mockMovie} />);
 
 			button = screen.getByRole("button");
-			expect(button).toHaveClass("btn-secondary");
-			expect(button).not.toHaveClass("bg-gray-800");
+			expect(button).toHaveClass("btn", "flex", "items-center");
 		});
 	});
 

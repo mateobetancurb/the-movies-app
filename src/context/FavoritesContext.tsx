@@ -7,11 +7,13 @@ import React, {
 	useEffect,
 	ReactNode,
 } from "react";
+import { Movie } from "@/src/interfaces";
 
 interface FavoritesContextProps {
-	favorites: number[];
-	addFavorite: (movieId: number) => void;
-	removeFavorite: (movieId: number) => void;
+	favorites: Movie[];
+	addFavorite: (movie: Movie) => void;
+	removeFavorite: (movie: Movie) => void;
+	toggleFavorite: (movie: Movie) => void;
 	isFavorite: (movieId: number) => boolean;
 }
 
@@ -19,6 +21,7 @@ const FavoritesContext = createContext<FavoritesContextProps>({
 	favorites: [],
 	addFavorite: () => {},
 	removeFavorite: () => {},
+	toggleFavorite: () => {},
 	isFavorite: () => false,
 });
 
@@ -31,7 +34,7 @@ interface FavoritesProviderProps {
 export const FavoritesProvider: React.FC<FavoritesProviderProps> = ({
 	children,
 }) => {
-	const [favorites, setFavorites] = useState<number[]>([]);
+	const [favorites, setFavorites] = useState<Movie[]>([]);
 	const [isClient, setIsClient] = useState(false);
 
 	useEffect(() => {
@@ -48,16 +51,26 @@ export const FavoritesProvider: React.FC<FavoritesProviderProps> = ({
 		}
 	}, [favorites, isClient]);
 
-	const addFavorite = (movieId: number) => {
-		setFavorites((prev) => [...prev, movieId]);
+	const isFavorite = (movieId: number): boolean => {
+		return favorites.some((movie) => movie.id === movieId);
 	};
 
-	const removeFavorite = (movieId: number) => {
-		setFavorites((prev) => prev.filter((id) => id !== movieId));
+	const addFavorite = (movie: Movie) => {
+		if (!isFavorite(movie.id)) {
+			setFavorites((prev) => [...prev, movie]);
+		}
 	};
 
-	const isFavorite = (movieId: number) => {
-		return favorites.includes(movieId);
+	const removeFavorite = (movie: Movie) => {
+		setFavorites((prev) => prev.filter((item) => item.id !== movie.id));
+	};
+
+	const toggleFavorite = (movie: Movie) => {
+		if (isFavorite(movie.id)) {
+			removeFavorite(movie);
+		} else {
+			addFavorite(movie);
+		}
 	};
 
 	return (
@@ -66,6 +79,7 @@ export const FavoritesProvider: React.FC<FavoritesProviderProps> = ({
 				favorites,
 				addFavorite,
 				removeFavorite,
+				toggleFavorite,
 				isFavorite,
 			}}
 		>

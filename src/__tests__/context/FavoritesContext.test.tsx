@@ -27,14 +27,34 @@ Object.defineProperty(window, "localStorage", {
 const TestComponent = () => {
 	const { favorites, addFavorite, removeFavorite, isFavorite } = useFavorites();
 
+	// Mock movie object for testing
+	const mockMovie = {
+		id: 1,
+		title: "Test Movie",
+		overview: "Test overview",
+		poster_path: "/test.jpg",
+		backdrop_path: "/test-backdrop.jpg",
+		release_date: "2023-01-01",
+		vote_average: 8.0,
+		vote_count: 100,
+		runtime: 120,
+		genres: [],
+		cast: [],
+	};
+
 	return (
 		<div>
 			<div data-testid="favorites-count">{favorites.length}</div>
-			<div data-testid="favorites-list">{favorites.join(",")}</div>
-			<button data-testid="add-favorite" onClick={() => addFavorite(1)}>
+			<div data-testid="favorites-list">
+				{favorites.map((f) => f.id).join(",")}
+			</div>
+			<button data-testid="add-favorite" onClick={() => addFavorite(mockMovie)}>
 				Add Favorite
 			</button>
-			<button data-testid="remove-favorite" onClick={() => removeFavorite(1)}>
+			<button
+				data-testid="remove-favorite"
+				onClick={() => removeFavorite(mockMovie)}
+			>
 				Remove Favorite
 			</button>
 			<div data-testid="is-favorite">{isFavorite(1) ? "true" : "false"}</div>
@@ -63,7 +83,48 @@ describe("FavoritesContext", () => {
 	});
 
 	it("initializes with favorites from localStorage", () => {
-		mockLocalStorage.getItem.mockReturnValueOnce(JSON.stringify([1, 2, 3]));
+		const storedMovies = [
+			{
+				id: 1,
+				title: "Movie 1",
+				overview: "Overview 1",
+				poster_path: "/1.jpg",
+				backdrop_path: "/1-backdrop.jpg",
+				release_date: "2023-01-01",
+				vote_average: 8.0,
+				vote_count: 100,
+				runtime: 120,
+				genres: [],
+				cast: [],
+			},
+			{
+				id: 2,
+				title: "Movie 2",
+				overview: "Overview 2",
+				poster_path: "/2.jpg",
+				backdrop_path: "/2-backdrop.jpg",
+				release_date: "2023-01-02",
+				vote_average: 7.5,
+				vote_count: 200,
+				runtime: 110,
+				genres: [],
+				cast: [],
+			},
+			{
+				id: 3,
+				title: "Movie 3",
+				overview: "Overview 3",
+				poster_path: "/3.jpg",
+				backdrop_path: "/3-backdrop.jpg",
+				release_date: "2023-01-03",
+				vote_average: 9.0,
+				vote_count: 300,
+				runtime: 130,
+				genres: [],
+				cast: [],
+			},
+		];
+		mockLocalStorage.getItem.mockReturnValueOnce(JSON.stringify(storedMovies));
 
 		render(
 			<FavoritesProvider>
@@ -96,12 +157,54 @@ describe("FavoritesContext", () => {
 		expect(screen.getByTestId("is-favorite")).toHaveTextContent("true");
 		expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
 			"favorites",
-			JSON.stringify([1])
+			JSON.stringify([
+				{
+					id: 1,
+					title: "Test Movie",
+					overview: "Test overview",
+					poster_path: "/test.jpg",
+					backdrop_path: "/test-backdrop.jpg",
+					release_date: "2023-01-01",
+					vote_average: 8.0,
+					vote_count: 100,
+					runtime: 120,
+					genres: [],
+					cast: [],
+				},
+			])
 		);
 	});
 
 	it("removes a favorite movie", () => {
-		mockLocalStorage.getItem.mockReturnValueOnce(JSON.stringify([1, 2]));
+		const storedMovies = [
+			{
+				id: 1,
+				title: "Movie 1",
+				overview: "Overview 1",
+				poster_path: "/1.jpg",
+				backdrop_path: "/1-backdrop.jpg",
+				release_date: "2023-01-01",
+				vote_average: 8.0,
+				vote_count: 100,
+				runtime: 120,
+				genres: [],
+				cast: [],
+			},
+			{
+				id: 2,
+				title: "Movie 2",
+				overview: "Overview 2",
+				poster_path: "/2.jpg",
+				backdrop_path: "/2-backdrop.jpg",
+				release_date: "2023-01-02",
+				vote_average: 7.5,
+				vote_count: 200,
+				runtime: 110,
+				genres: [],
+				cast: [],
+			},
+		];
+		mockLocalStorage.getItem.mockReturnValueOnce(JSON.stringify(storedMovies));
 
 		render(
 			<FavoritesProvider>
@@ -120,7 +223,7 @@ describe("FavoritesContext", () => {
 		expect(screen.getByTestId("is-favorite")).toHaveTextContent("false");
 		expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
 			"favorites",
-			JSON.stringify([2])
+			JSON.stringify([storedMovies[1]])
 		);
 	});
 });

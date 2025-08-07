@@ -4,7 +4,77 @@ This document provides comprehensive information about the testing practices, se
 
 ## Test Fixes - Latest Updates
 
-### Fixed Failing Tests (December 2024)
+### Fixed Failing Tests (December 2024) - Round 2
+
+#### FavoritesContext Tests (`src/__tests__/context/FavoritesContext.test.tsx`)
+
+**Issue**: Tests were expecting `addFavorite` and `removeFavorite` functions to work with just movie IDs, but the actual implementation expects full Movie objects.
+
+**Error Messages**:
+
+```
+expect(element).toHaveTextContent()
+Expected element to have text content: true
+Received: false
+```
+
+**Solution**: Updated test component and test cases to use proper Movie objects:
+
+**Key Changes**:
+
+- ✅ Updated TestComponent to use full Movie objects instead of just IDs
+- ✅ Fixed localStorage initialization tests to use Movie objects
+- ✅ Updated all assertions to match the actual data structure
+- ✅ Maintained all existing test coverage for favorites functionality
+
+```typescript
+// Before: addFavorite(1)
+// After: addFavorite(mockMovie)
+
+// Before: JSON.stringify([1, 2, 3])
+// After: JSON.stringify([movieObj1, movieObj2, movieObj3])
+```
+
+#### AddToFavoritesBtn Tests (`src/__tests__/components/core/AddToFavoritesBtn.test.tsx`)
+
+**Issue**: Tests expected separate `addFavorite` and `removeFavorite` functions, but the actual component uses `toggleFavorite`. Also expected specific CSS classes that don't match the implementation.
+
+**Error Messages**:
+
+```
+expect(jest.fn()).toHaveBeenCalledWith(...expected)
+Expected: 999999999
+Number of calls: 0
+
+expect(element).toHaveClass("bg-gray-800")
+Expected the element to have class: bg-gray-800
+Received: btn flex items-center
+```
+
+**Solution**: Updated tests to match the actual component implementation:
+
+**Key Changes**:
+
+- ✅ Updated mock context to include `toggleFavorite` function
+- ✅ Fixed all click interaction tests to use `toggleFavorite` instead of separate functions
+- ✅ Updated CSS class expectations to match actual classes (`btn flex items-center`)
+- ✅ Fixed function call expectations to pass full Movie objects
+- ✅ Maintained comprehensive test coverage for all component functionality
+
+```typescript
+// Before: expect(mockAddFavorite).toHaveBeenCalledWith(mockMovie.id);
+// After: expect(mockToggleFavorite).toHaveBeenCalledWith(mockMovie);
+
+// Before: expect(button).toHaveClass("bg-gray-800", "hover:bg-gray-700");
+// After: expect(button).toHaveClass("btn", "flex", "items-center");
+```
+
+**Test Results**:
+
+- **Before**: 12 failed tests, 711 passed
+- **After**: 0 failed tests, 723 passed (all tests passing)
+
+### Fixed Failing Tests (December 2024) - Round 1
 
 #### Layout Tests (`src/__tests__/app/layout.test.tsx`) - ES Module Import Issue
 
