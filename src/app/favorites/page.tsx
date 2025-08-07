@@ -6,7 +6,7 @@ import { useFavorites } from "@/src/context/FavoritesContext";
 import MovieGrid from "@/src/components/movies/MovieGrid";
 
 const Favorites: React.FC = () => {
-	const { favorites } = useFavorites();
+	const { favorites, deleteAllFavorites } = useFavorites();
 
 	return (
 		<div className="container-page pt-24">
@@ -14,6 +14,14 @@ const Favorites: React.FC = () => {
 			<p className="text-gray-400 mb-8">
 				Your personally curated collection of favorite movies.
 			</p>
+			{favorites.length > 0 && (
+				<button
+					onClick={deleteAllFavorites}
+					className="btn bg-red-50 text-red-700 mb-5"
+				>
+					Delete all favorites
+				</button>
+			)}
 
 			{favorites.length > 0 ? (
 				<MovieGrid
