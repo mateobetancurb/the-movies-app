@@ -1,12 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { Heart } from "lucide-react";
 import Link from "next/link";
 import { useFavorites } from "@/src/context/FavoritesContext";
 import MovieGrid from "@/src/components/movies/MovieGrid";
+import ConfirmationModal from "@/src/components/core/ConfirmationModal";
 
 const Favorites: React.FC = () => {
 	const { favorites, deleteAllFavorites } = useFavorites();
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 	return (
 		<div className="container-page pt-24">
@@ -16,8 +19,8 @@ const Favorites: React.FC = () => {
 			</p>
 			{favorites.length > 0 && (
 				<button
-					onClick={deleteAllFavorites}
-					className="btn bg-red-50 text-red-700 mb-5"
+					onClick={() => setShowDeleteModal(true)}
+					className="btn bg-red-50 text-red-700 mb-5 hover:bg-red-100 transition-colors duration-200"
 				>
 					Delete all favorites
 				</button>
@@ -41,6 +44,17 @@ const Favorites: React.FC = () => {
 					</Link>
 				</div>
 			)}
+
+			<ConfirmationModal
+				isOpen={showDeleteModal}
+				onClose={() => setShowDeleteModal(false)}
+				onConfirm={deleteAllFavorites}
+				title="Delete All Favorites"
+				message={`Are you sure you want to delete all ${favorites.length} favorite movies? This action cannot be undone.`}
+				confirmText="Delete All"
+				cancelText="Cancel"
+				type="danger"
+			/>
 		</div>
 	);
 };
