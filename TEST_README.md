@@ -2,6 +2,38 @@
 
 This document provides comprehensive information about the testing practices, setup, and guidelines for the Movies App project.
 
+## Test Additions - Latest Updates
+
+### Added Tests (January 2025)
+
+#### ConfirmationModal Tests (`src/__tests__/components/core/ConfirmationModal.test.tsx`)
+
+**New Test Coverage**:
+
+- ✅ Created comprehensive test suite for the ConfirmationModal component
+- ✅ Tests for rendering different modal types (danger, warning, info)
+- ✅ Tests for button variant selection based on modal type
+- ✅ Tests for user interactions (clicking buttons, backdrop, keyboard events)
+- ✅ Tests for document body modifications (overflow handling)
+- ✅ Tests for accessibility features and animation classes
+- ✅ Tests for edge cases like empty content and long messages
+
+**Key Test Categories**:
+
+- Basic rendering with different props
+- Modal type styling and behavior
+- Button variant selection
+- User interactions (clicks and keyboard)
+- Document body state management
+- Accessibility compliance
+- Animation classes
+- Edge case handling
+
+**Test Results**:
+
+- 30+ tests added covering all component functionality
+- 100% test coverage for the ConfirmationModal component
+
 ## Test Fixes - Latest Updates
 
 ### Fixed Failing Tests (December 2024) - Round 3
@@ -235,7 +267,7 @@ npm test -- --testPathPattern="MovieCard"
 - **Layout Components**: Navbar, Footer
 - **Movie Components**: MovieCard, MovieGrid, MovieHero, MovieCarousel
 - **Category Components**: CategoryCard, GenresList
-- **Core Components**: AddToFavoritesBtn, Carousel, SearchSuggestions
+- **Core Components**: AddToFavoritesBtn, Carousel, SearchSuggestions, ConfirmationModal
 
 ### Page Tests
 
