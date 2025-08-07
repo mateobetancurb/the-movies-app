@@ -15,6 +15,7 @@ interface FavoritesContextProps {
 	removeFavorite: (movie: Movie) => void;
 	toggleFavorite: (movie: Movie) => void;
 	isFavorite: (movieId: number) => boolean;
+	deleteAllFavorites: () => void;
 }
 
 const FavoritesContext = createContext<FavoritesContextProps>({
@@ -23,6 +24,7 @@ const FavoritesContext = createContext<FavoritesContextProps>({
 	removeFavorite: () => {},
 	toggleFavorite: () => {},
 	isFavorite: () => false,
+	deleteAllFavorites: () => {},
 });
 
 export const useFavorites = () => useContext(FavoritesContext);
@@ -73,6 +75,11 @@ export const FavoritesProvider: React.FC<FavoritesProviderProps> = ({
 		}
 	};
 
+	const deleteAllFavorites = () => {
+		localStorage.removeItem("favorites");
+		setFavorites([]);
+	};
+
 	return (
 		<FavoritesContext.Provider
 			value={{
@@ -81,6 +88,7 @@ export const FavoritesProvider: React.FC<FavoritesProviderProps> = ({
 				removeFavorite,
 				toggleFavorite,
 				isFavorite,
+				deleteAllFavorites,
 			}}
 		>
 			{children}
